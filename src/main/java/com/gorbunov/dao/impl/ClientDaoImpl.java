@@ -8,9 +8,10 @@ import java.util.List;
 
 public class ClientDaoImpl implements ClientDao {
 
+    static List<Client> clients = new ArrayList<>();
+
     @Override
     public List<Client> clientsList(Client client) {
-        List<Client> clients = new ArrayList<>();
         clients.add(client);
         return clients;
     }

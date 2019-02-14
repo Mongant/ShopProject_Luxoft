@@ -8,9 +8,11 @@ import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
 
+    static List<Product> products = new ArrayList<>();
+
     @Override
     public List<Product> listProducts(Product product) {
-        List<Product> products = new ArrayList<>();
+
         products.add(product);
         return products;
     }

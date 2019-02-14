@@ -83,7 +83,7 @@ public class AdminMenu {
                     clientAdminOptions();
                     break;
                 case "0":
-                    new MainMenu().showMenu();
+                    adminMenu();
                     break;
                 default:
                     System.out.println("Wrong input, try again!");
@@ -168,7 +168,7 @@ public class AdminMenu {
 
         clientService.createClient(name, surname, phone);
         System.out.println("Client was created successfully!");
-        adminOptions();
+        clientAdminOptions();
     }
 
     private void createProduct() throws IOException {
@@ -181,7 +181,7 @@ public class AdminMenu {
 
         productService.createProduct(productName, description, price);
         System.out.println("Product was created successfully!");
-        adminOptions();
+        productAdminOptions();
     }
 
     private void createOrder() throws IOException {
@@ -194,6 +194,6 @@ public class AdminMenu {
 
 //        orderService.createOrder(client, products, amount);
         System.out.println("Product was created successfully!");
-        adminOptions();
+        orderAdminOptions();
     }
 }
