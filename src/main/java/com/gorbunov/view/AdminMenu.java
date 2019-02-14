@@ -1,14 +1,18 @@
 package com.gorbunov.view;
 
+import com.gorbunov.domain.Product;
 import com.gorbunov.services.ClientService;
+import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductService;
 import com.gorbunov.services.impl.ClietServiceImpl;
+import com.gorbunov.services.impl.OrderServiceImpl;
 import com.gorbunov.services.impl.ProductServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class AdminMenu {
 
@@ -16,6 +20,7 @@ public class AdminMenu {
 
     private final ClientService clientService = new ClietServiceImpl();
     private final ProductService productService = new ProductServiceImpl();
+    private final OrderService orderService = new OrderServiceImpl();
 
     public void adminMenu() throws IOException {
         boolean isRaning = true;
@@ -70,16 +75,19 @@ public class AdminMenu {
                     createClient();
                     break;
                 case "2":
-                    productAdminOptions();
+                    clientService.modifyClient(120156);
+                    clientAdminOptions();
                     break;
                 case "3":
-                    orderAdminOptions();
+                    clientService.deleteClient(120156);
+                    clientAdminOptions();
                     break;
                 case "0":
                     new MainMenu().showMenu();
                     break;
                 default:
-                    System.out.println("Wrong input");
+                    System.out.println("Wrong input, try again!");
+                    clientAdminOptions();
             }
         }
     }
@@ -100,24 +108,54 @@ public class AdminMenu {
                     createProduct();
                     break;
                 case "2":
+                    productService.modyfyProduct(120156);
                     productAdminOptions();
                     break;
                 case "3":
-                    orderAdminOptions();
+                    productService.deleteProduct(120156);
+                    productAdminOptions();
                     break;
                 case "0":
-                    new MainMenu().showMenu();
+                    adminMenu();
                     break;
                 default:
-                    System.out.println("Wrong input");
+                    System.out.println("Wrong input, try again!");
+                    productAdminOptions();
             }
         }
     }
 
-    private void orderAdminOptions() {
-        System.out.println("\n1. Modify content");
-        System.out.println("2. Delete order");
+    private void orderAdminOptions() throws IOException {
+        boolean isRaning = true;
+
+        System.out.println("\n1. Create order");
+        System.out.println("2. Modify content");
+        System.out.println("3. Delete order");
         System.out.println("0. Return in admin menu");
+
+        while (isRaning) {
+            System.out.print("\nSelect your choice => ");
+            String input = br.readLine();
+            switch (input) {
+                case "1":
+                    createOrder();
+                    break;
+                case "2":
+                    orderService.modyfyOrder(120156);
+                    orderAdminOptions();
+                    break;
+                case "3":
+                    orderService.deleteOrder(120156);
+                    orderAdminOptions();
+                    break;
+                case "0":
+                    adminMenu();
+                    break;
+                default:
+                    System.out.println("Wrong input, try again!");
+                    orderAdminOptions();
+            }
+        }
     }
 
     private void createClient() throws IOException {
@@ -146,5 +184,16 @@ public class AdminMenu {
         adminOptions();
     }
 
+    private void createOrder() throws IOException {
+        System.out.print("Input client id: ");
+        String client = br.readLine();
+        System.out.print("Input products id: ");
+        String products = br.readLine();
+        System.out.print("Input amount: ");
+        float amount = br.read();
 
+//        orderService.createOrder(client, products, amount);
+        System.out.println("Product was created successfully!");
+        adminOptions();
+    }
 }
