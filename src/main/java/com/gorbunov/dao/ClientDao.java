@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface ClientDao {
 
-    List<Client> clientsList(Client client);
+    void addClient(Client client);
+    List<Client>clientList();
     boolean modifyClient(long id);
     boolean deleteClient(long id);
 }

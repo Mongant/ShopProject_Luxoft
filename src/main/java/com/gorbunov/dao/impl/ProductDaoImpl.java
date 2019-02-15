@@ -11,9 +11,12 @@ public class ProductDaoImpl implements ProductDao {
     static List<Product> products = new ArrayList<>();
 
     @Override
-    public List<Product> listProducts(Product product) {
-
+    public void addProduct(Product product) {
         products.add(product);
+    }
+
+    @Override
+    public List<Product> listProducts() {
         return products;
     }
 

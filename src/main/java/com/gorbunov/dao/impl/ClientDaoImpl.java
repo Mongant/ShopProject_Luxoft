@@ -11,8 +11,12 @@ public class ClientDaoImpl implements ClientDao {
     static List<Client> clients = new ArrayList<>();
 
     @Override
-    public List<Client> clientsList(Client client) {
+    public void addClient(Client client) {
         clients.add(client);
+    }
+
+    @Override
+    public List<Client> clientList() {
         return clients;
     }
 

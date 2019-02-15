@@ -16,15 +16,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void createOrder(Client client, List<Product> products, float amount) {
         Order order = new Order(client, products, amount);
-        orderDao.orders(order);
+        orderDao.addOrders(order);
     }
 
-    @Override
-    public void modyfyOrder(long id) {
+    public void modifyOrder(long id) {
         if(orderDao.modifyOrder(id)) {
             System.out.println("Add some changes in Order");
         } else {
-            System.out.println("Something was wrong!");
+            System.out.println("Something was wrong with modify order by id: " + id);
         }
     }
 
@@ -33,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
         if(orderDao.modifyOrder(id)) {
             System.out.println("Order on id: " + id + " was removed!");
         } else {
-            System.out.println("Something was wrong!");
+            System.out.println("Something was wrong with delete order by id: " + id);
         }
     }
 }

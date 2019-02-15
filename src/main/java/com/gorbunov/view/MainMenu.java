@@ -7,12 +7,10 @@ import java.io.InputStreamReader;
 public class MainMenu {
 
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private final ClientMenu clientMenu = new ClientMenu();
-    private final AdminMenu adminMenu = new AdminMenu();
 
     public void showMenu() throws IOException {
-        boolean isRaning = true;
-        while(isRaning) {
+        boolean isRunning = true;
+        while(isRunning) {
 
             System.out.println("\n1. Admin menu");
             System.out.println("2. Client menu");
@@ -28,7 +26,7 @@ public class MainMenu {
                     break;
                 case "2":
                     System.out.println("Client menu");
-                    new ClientMenu().show();
+                    new ClientMenu().clientMenu();
                     break;
                 case "0":
                     System.out.println("Exit...");

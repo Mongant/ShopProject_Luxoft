@@ -1,32 +1,29 @@
 package com.gorbunov.view;
 
-import com.gorbunov.domain.Product;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductService;
-import com.gorbunov.services.impl.ClietServiceImpl;
+import com.gorbunov.services.impl.ClientServiceImpl;
 import com.gorbunov.services.impl.OrderServiceImpl;
 import com.gorbunov.services.impl.ProductServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
-import java.util.List;
 
 public class AdminMenu {
 
     private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    private final ClientService clientService = new ClietServiceImpl();
+    private final ClientService clientService = new ClientServiceImpl();
     private final ProductService productService = new ProductServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
 
     public void adminMenu() throws IOException {
-        boolean isRaning = true;
+        boolean isRunning = true;
         adminOptions();
 
-        while (isRaning) {
+        while (isRunning) {
             System.out.print("\nSelect your choice => ");
             String input = br.readLine();
             switch (input) {
@@ -60,14 +57,14 @@ public class AdminMenu {
     }
 
     private void clientAdminOptions() throws IOException {
-        boolean isRaning = true;
+        boolean isRunning = true;
 
         System.out.println("\n1. Create client");
         System.out.println("2. Modify client");
         System.out.println("3. Remove client");
         System.out.println("0. Return in admin menu");
 
-        while (isRaning) {
+        while (isRunning) {
             System.out.print("\nSelect your choice => ");
             String input = br.readLine();
             switch (input) {
@@ -93,14 +90,14 @@ public class AdminMenu {
     }
 
     private void productAdminOptions() throws IOException {
-        boolean isRaning = true;
+        boolean isRunning = true;
 
         System.out.println("\n1. Add product");
         System.out.println("2. Modify product");
         System.out.println("3. Delete product");
         System.out.println("0. Return in admin menu");
 
-        while (isRaning) {
+        while (isRunning) {
             System.out.print("\nSelect your choice => ");
             String input = br.readLine();
             switch (input) {
@@ -108,7 +105,7 @@ public class AdminMenu {
                     createProduct();
                     break;
                 case "2":
-                    productService.modyfyProduct(120156);
+                    productService.modifyProduct(120156);
                     productAdminOptions();
                     break;
                 case "3":
@@ -126,14 +123,14 @@ public class AdminMenu {
     }
 
     private void orderAdminOptions() throws IOException {
-        boolean isRaning = true;
+        boolean isRunning = true;
 
         System.out.println("\n1. Create order");
         System.out.println("2. Modify content");
         System.out.println("3. Delete order");
         System.out.println("0. Return in admin menu");
 
-        while (isRaning) {
+        while (isRunning) {
             System.out.print("\nSelect your choice => ");
             String input = br.readLine();
             switch (input) {
@@ -141,7 +138,7 @@ public class AdminMenu {
                     createOrder();
                     break;
                 case "2":
-                    orderService.modyfyOrder(120156);
+                    orderService.modifyOrder(120156);
                     orderAdminOptions();
                     break;
                 case "3":
