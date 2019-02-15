@@ -1,5 +1,6 @@
 package com.gorbunov.view;
 
+import com.gorbunov.domain.Client;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductService;
@@ -62,6 +63,7 @@ public class AdminMenu {
         System.out.println("\n1. Create client");
         System.out.println("2. Modify client");
         System.out.println("3. Remove client");
+        System.out.println("4. Show clients list");
         System.out.println("0. Return in admin menu");
 
         while (isRunning) {
@@ -78,6 +80,9 @@ public class AdminMenu {
                 case "3":
                     clientService.deleteClient(120156);
                     clientAdminOptions();
+                    break;
+                case "4":
+                    showClientsList();
                     break;
                 case "0":
                     adminMenu();
@@ -165,6 +170,17 @@ public class AdminMenu {
 
         clientService.createClient(name, surname, phone);
         System.out.println("Client was created successfully!");
+        clientAdminOptions();
+    }
+
+    private void showClientsList() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int countClient = 0;
+        for(Client client:clientService.listClients()) {
+            countClient++;
+            sb.append(countClient).append(". Name: ").append(client.getName()).append(" Surname: ").append(client.getSurname()).append(" Phone: ").append(client.getPhone()).append("\n");
+        }
+        System.out.println(sb.toString());
         clientAdminOptions();
     }
 

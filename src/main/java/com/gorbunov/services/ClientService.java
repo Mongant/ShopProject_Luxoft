@@ -1,5 +1,9 @@
 package com.gorbunov.services;
 
+import com.gorbunov.domain.Client;
+
+import java.util.List;
+
 public interface ClientService {
 
     /**
@@ -21,4 +25,9 @@ public interface ClientService {
      * @param id customer unique identifier
      * */
     void deleteClient(long id);
+
+    /**
+     * Method return clients list
+     * */
+    List<Client> listClients();
 }
