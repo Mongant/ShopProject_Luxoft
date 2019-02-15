@@ -5,6 +5,8 @@ import com.gorbunov.dao.impl.ClientDaoImpl;
 import com.gorbunov.domain.Client;
 import com.gorbunov.services.ClientService;
 
+import java.util.List;
+
 public class ClientServiceImpl implements ClientService {
 
     private ClientDao clientDao = new ClientDaoImpl();
@@ -31,5 +33,10 @@ public class ClientServiceImpl implements ClientService {
         } else {
             System.out.println("Something was wrong with delete client by id:" + id);
         }
+    }
+
+    @Override
+    public List<Client> listClients() {
+        return clientDao.clientList();
     }
 }
