@@ -14,6 +14,8 @@ public interface ClientService {
      * */
     void createClient(String name, String surname, String phone);
 
+    void createClient(String name, String surname, String phone, int age, String email);
+
     /**
      * Method for modify data client by id
      * @param id customer unique identifier

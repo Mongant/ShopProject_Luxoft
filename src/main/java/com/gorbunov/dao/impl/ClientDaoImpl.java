@@ -4,20 +4,28 @@ import com.gorbunov.dao.ClientDao;
 import com.gorbunov.domain.Client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ClientDaoImpl implements ClientDao {
 
-    static List<Client> clients = new ArrayList<>();
+    private Map<Long, Client> clients = new HashMap<>();
+    private static long genetator =0;
+    private static ClientDao clientDao = new ClientDaoImpl();
+
+    private ClientDaoImpl() {
+    }
 
     @Override
     public void addClient(Client client) {
-        clients.add(client);
+        client.setId(genetator++);
+        clients.put(client.getId(), client);
     }
 
     @Override
     public List<Client> clientList() {
-        return clients;
+        return new ArrayList<>(clients.values());
     }
 
     @Override
@@ -28,5 +36,9 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public boolean deleteClient(long id) {
         return true;
+    }
+
+    public static ClientDao getInstans() {
+        return clientDao;
     }
 }

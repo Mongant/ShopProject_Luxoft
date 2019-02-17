@@ -7,6 +7,7 @@ import com.gorbunov.services.ProductService;
 import com.gorbunov.services.impl.ClientServiceImpl;
 import com.gorbunov.services.impl.OrderServiceImpl;
 import com.gorbunov.services.impl.ProductServiceImpl;
+import com.gorbunov.validator.BusinessException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,13 +15,18 @@ import java.io.InputStreamReader;
 
 public class AdminMenu {
 
-    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private BufferedReader br;
 
-    private final ClientService clientService = new ClientServiceImpl();
+    private ClientService clientService;
     private final ProductService productService = new ProductServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
 
-    public void adminMenu() throws IOException {
+    public AdminMenu(BufferedReader br, ClientService clientService) {
+        this.br = br;
+        this.clientService = clientService;
+    }
+
+    public void adminMenu() throws IOException, BusinessException {
         boolean isRunning = true;
         adminOptions();
 
@@ -41,7 +47,7 @@ public class AdminMenu {
                     orderAdminOptions();
                     break;
                 case "0":
-                    new MainMenu().showMenu();
+                    new MainMenu(br, clientService).showMenu();
                     break;
                 default:
                     System.out.println("Wrong input, try again!");
@@ -57,7 +63,7 @@ public class AdminMenu {
         System.out.println("0. Return in main menu");
     }
 
-    private void clientAdminOptions() throws IOException {
+    private void clientAdminOptions() throws BusinessException, IOException {
         boolean isRunning = true;
 
         System.out.println("\n1. Create client");
@@ -94,7 +100,7 @@ public class AdminMenu {
         }
     }
 
-    private void productAdminOptions() throws IOException {
+    private void productAdminOptions() throws IOException, BusinessException {
         boolean isRunning = true;
 
         System.out.println("\n1. Add product");
@@ -127,7 +133,7 @@ public class AdminMenu {
         }
     }
 
-    private void orderAdminOptions() throws IOException {
+    private void orderAdminOptions() throws IOException, BusinessException {
         boolean isRunning = true;
 
         System.out.println("\n1. Create order");
@@ -160,20 +166,30 @@ public class AdminMenu {
         }
     }
 
-    private void createClient() throws IOException {
-        System.out.print("Input name: ");
-        String name = br.readLine();
-        System.out.print("Input surname: ");
-        String surname = br.readLine();
-        System.out.print("Input phone: ");
-        String phone = br.readLine();
+    private void createClient() {
+        try {
+            System.out.print("Input name: ");
+            String name = br.readLine();
+            System.out.print("Input surname: ");
+            String surname = br.readLine();
+            System.out.print("Input phone: ");
+            String phone = br.readLine();
+            System.out.println("Input age:");
+            int age = Integer.parseInt(br.readLine());
+            System.out.println("Input email:");
+            String email = br.readLine();
 
-        clientService.createClient(name, surname, phone);
-        System.out.println("Client was created successfully!");
-        clientAdminOptions();
+            clientService.createClient(name, surname, phone, age, email);
+            System.out.println("Client was created successfully!");
+            clientAdminOptions();
+        } catch (BusinessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void showClientsList() throws IOException {
+    private void showClientsList() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
         int countClient = 0;
         for(Client client:clientService.listClients()) {
@@ -184,7 +200,7 @@ public class AdminMenu {
         clientAdminOptions();
     }
 
-    private void createProduct() throws IOException {
+    private void createProduct() throws IOException, BusinessException {
         System.out.print("Input product name: ");
         String productName = br.readLine();
         System.out.print("Input product description: ");
@@ -197,7 +213,7 @@ public class AdminMenu {
         productAdminOptions();
     }
 
-    private void createOrder() throws IOException {
+    private void createOrder() throws IOException, BusinessException {
         System.out.print("Input client id: ");
         String client = br.readLine();
         System.out.print("Input products id: ");
