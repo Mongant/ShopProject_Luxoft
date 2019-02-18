@@ -4,23 +4,28 @@ import com.gorbunov.domain.Client;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductService;
-import com.gorbunov.services.impl.ClientServiceImpl;
 import com.gorbunov.services.impl.OrderServiceImpl;
 import com.gorbunov.services.impl.ProductServiceImpl;
+import com.gorbunov.validator.BusinessException;
+import com.gorbunov.validator.ValidationServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class AdminMenu {
 
-    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private BufferedReader br;
 
-    private final ClientService clientService = new ClientServiceImpl();
+    private ClientService clientService;
     private final ProductService productService = new ProductServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
 
-    public void adminMenu() throws IOException {
+    public AdminMenu(BufferedReader br, ClientService clientService) {
+        this.br = br;
+        this.clientService = clientService;
+    }
+
+    public void adminMenu() throws IOException, BusinessException {
         boolean isRunning = true;
         adminOptions();
 
@@ -41,7 +46,7 @@ public class AdminMenu {
                     orderAdminOptions();
                     break;
                 case "0":
-                    new MainMenu().showMenu();
+                    new MainMenu(br, clientService).showMenu();
                     break;
                 default:
                     System.out.println("Wrong input, try again!");
@@ -57,7 +62,7 @@ public class AdminMenu {
         System.out.println("0. Return in main menu");
     }
 
-    private void clientAdminOptions() throws IOException {
+    private void clientAdminOptions() throws BusinessException, IOException {
         boolean isRunning = true;
 
         System.out.println("\n1. Create client");
@@ -78,7 +83,7 @@ public class AdminMenu {
                     clientAdminOptions();
                     break;
                 case "3":
-                    clientService.deleteClient(120156);
+                    deleteClient();
                     clientAdminOptions();
                     break;
                 case "4":
@@ -94,7 +99,7 @@ public class AdminMenu {
         }
     }
 
-    private void productAdminOptions() throws IOException {
+    private void productAdminOptions() throws IOException, BusinessException {
         boolean isRunning = true;
 
         System.out.println("\n1. Add product");
@@ -127,7 +132,7 @@ public class AdminMenu {
         }
     }
 
-    private void orderAdminOptions() throws IOException {
+    private void orderAdminOptions() throws IOException, BusinessException {
         boolean isRunning = true;
 
         System.out.println("\n1. Create order");
@@ -160,31 +165,59 @@ public class AdminMenu {
         }
     }
 
-    private void createClient() throws IOException {
-        System.out.print("Input name: ");
-        String name = br.readLine();
-        System.out.print("Input surname: ");
-        String surname = br.readLine();
-        System.out.print("Input phone: ");
-        String phone = br.readLine();
-
-        clientService.createClient(name, surname, phone);
-        System.out.println("Client was created successfully!");
-        clientAdminOptions();
+    private void createClient() {
+        try {
+            System.out.print("\nInput name: ");
+            String name = br.readLine();
+            System.out.print("Input surname: ");
+            String surname = br.readLine();
+            System.out.print("Input phone: ");
+            String phone = br.readLine();
+            if(!ValidationServiceImpl.validatePhoneNum(phone)) {
+                System.err.println("Incorrect phone number format! Enter the data again.");
+                createClient();
+            }
+            System.out.print("Input age: ");
+            int age = Integer.parseInt(br.readLine());
+            System.out.print("Input email: ");
+            String email = br.readLine();
+            if(!ValidationServiceImpl.validateEmail(email)) {
+                System.out.println("Incorrect email! Enter the data again.");
+                createClient();
+            }
+            clientService.createClient(name, surname, phone, age, email);
+            System.out.println("Client was created successfully!");
+            clientAdminOptions();
+        } catch (BusinessException e) {
+            System.err.println("The age is incorrect!");
+            createClient();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void showClientsList() throws IOException {
+    private void deleteClient() throws IOException {
+        System.out.print("Enter client id: ");
+        long id = Long.parseLong(br.readLine());
+        clientService.deleteClient(id);
+    }
+
+    private void showClientsList() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
         int countClient = 0;
         for(Client client:clientService.listClients()) {
             countClient++;
-            sb.append(countClient).append(". Name: ").append(client.getName()).append(" Surname: ").append(client.getSurname()).append(" Phone: ").append(client.getPhone()).append("\n");
+            sb.append(countClient).append(". Name: ").append(client.getName()).
+                    append(" Surname: ").append(client.getSurname()).
+                    append(" Phone: ").append(client.getPhone()).
+                    append(" Age: ").append(client.getAge()).
+                    append(" Email: ").append(client.getEmail());
         }
         System.out.println(sb.toString());
         clientAdminOptions();
     }
 
-    private void createProduct() throws IOException {
+    private void createProduct() throws IOException, BusinessException {
         System.out.print("Input product name: ");
         String productName = br.readLine();
         System.out.print("Input product description: ");
@@ -197,7 +230,7 @@ public class AdminMenu {
         productAdminOptions();
     }
 
-    private void createOrder() throws IOException {
+    private void createOrder() throws IOException, BusinessException {
         System.out.print("Input client id: ");
         String client = br.readLine();
         System.out.print("Input products id: ");

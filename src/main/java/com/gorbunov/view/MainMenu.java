@@ -1,14 +1,23 @@
 package com.gorbunov.view;
 
+import com.gorbunov.services.ClientService;
+import com.gorbunov.validator.BusinessException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainMenu {
 
-    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader br;
+    private ClientService clientService;
 
-    public void showMenu() throws IOException {
+    public MainMenu(BufferedReader br, ClientService clientService) {
+        this.br = br;
+        this.clientService = clientService;
+    }
+
+    public void showMenu() throws IOException, BusinessException {
         boolean isRunning = true;
         while(isRunning) {
 
@@ -22,11 +31,11 @@ public class MainMenu {
             switch (input) {
                 case "1":
                     System.out.println("Admin menu");
-                    new AdminMenu().adminMenu();
+                    new AdminMenu(br, clientService).adminMenu();
                     break;
                 case "2":
                     System.out.println("Client menu");
-                    new ClientMenu().clientMenu();
+                    new ClientMenu(br, clientService).clientMenu();
                     break;
                 case "0":
                     System.out.println("Exit...");
