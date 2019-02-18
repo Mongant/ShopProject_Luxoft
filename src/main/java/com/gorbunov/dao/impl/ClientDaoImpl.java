@@ -11,15 +11,22 @@ import java.util.Map;
 public class ClientDaoImpl implements ClientDao {
 
     private Map<Long, Client> clients = new HashMap<>();
-    private static long genetator =0;
+    private static long generatorId = 0;
     private static ClientDao clientDao = new ClientDaoImpl();
 
     private ClientDaoImpl() {
     }
 
+    public static ClientDao getInstance() {
+        if(clientDao == null) {
+            clientDao = new ClientDaoImpl();
+        }
+        return clientDao;
+    }
+
     @Override
     public void addClient(Client client) {
-        client.setId(genetator++);
+        client.setId(generatorId++);
         clients.put(client.getId(), client);
     }
 
@@ -34,11 +41,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public boolean deleteClient(long id) {
-        return true;
-    }
-
-    public static ClientDao getInstans() {
-        return clientDao;
+    public void deleteClient(long id) {
+        clients.remove(id);
     }
 }

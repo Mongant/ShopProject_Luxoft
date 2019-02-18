@@ -1,6 +1,7 @@
 package com.gorbunov.services;
 
 import com.gorbunov.domain.Client;
+import com.gorbunov.validator.BusinessException;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface ClientService {
      * */
     void createClient(String name, String surname, String phone);
 
-    void createClient(String name, String surname, String phone, int age, String email);
+    void createClient(String name, String surname, String phone, int age, String email) throws BusinessException;
 
     /**
      * Method for modify data client by id

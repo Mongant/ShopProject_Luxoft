@@ -29,14 +29,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void createClient(String name, String surname, String phone, int age, String email) {
-        try {
-        Client client = new Client(name, surname, phone, age, email);
-        validationService.validateAge(age);
-        clientDao.addClient(client);
-        } catch (BusinessException e) {
-            e.printStackTrace();
-        }
+    public void createClient(String name, String surname, String phone, int age, String email) throws BusinessException {
+            validationService.validateAge(age);
+            Client client = new Client(name, surname, phone, age, email);
+            clientDao.addClient(client);
     }
 
     @Override
@@ -50,11 +46,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(long id) {
-        if(clientDao.deleteClient(id)) {
-            System.out.println("Client on id: " + id + " was removed!");
-        } else {
-            System.out.println("Something was wrong with delete client by id:" + id);
-        }
+        clientDao.deleteClient(id);
+        System.out.println("Client by id: " + id + "was deleted!");
     }
 
     @Override

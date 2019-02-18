@@ -4,14 +4,13 @@ import com.gorbunov.domain.Client;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductService;
-import com.gorbunov.services.impl.ClientServiceImpl;
 import com.gorbunov.services.impl.OrderServiceImpl;
 import com.gorbunov.services.impl.ProductServiceImpl;
 import com.gorbunov.validator.BusinessException;
+import com.gorbunov.validator.ValidationServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class AdminMenu {
 
@@ -84,7 +83,7 @@ public class AdminMenu {
                     clientAdminOptions();
                     break;
                 case "3":
-                    clientService.deleteClient(120156);
+                    deleteClient();
                     clientAdminOptions();
                     break;
                 case "4":
@@ -168,25 +167,39 @@ public class AdminMenu {
 
     private void createClient() {
         try {
-            System.out.print("Input name: ");
+            System.out.print("\nInput name: ");
             String name = br.readLine();
             System.out.print("Input surname: ");
             String surname = br.readLine();
             System.out.print("Input phone: ");
             String phone = br.readLine();
-            System.out.println("Input age:");
+            if(!ValidationServiceImpl.validatePhoneNum(phone)) {
+                System.err.println("Incorrect phone number format! Enter the data again.");
+                createClient();
+            }
+            System.out.print("Input age: ");
             int age = Integer.parseInt(br.readLine());
-            System.out.println("Input email:");
+            System.out.print("Input email: ");
             String email = br.readLine();
-
+            if(!ValidationServiceImpl.validateEmail(email)) {
+                System.out.println("Incorrect email! Enter the data again.");
+                createClient();
+            }
             clientService.createClient(name, surname, phone, age, email);
             System.out.println("Client was created successfully!");
             clientAdminOptions();
         } catch (BusinessException e) {
-            e.printStackTrace();
+            System.err.println("The age is incorrect!");
+            createClient();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void deleteClient() throws IOException {
+        System.out.print("Enter client id: ");
+        long id = Long.parseLong(br.readLine());
+        clientService.deleteClient(id);
     }
 
     private void showClientsList() throws IOException, BusinessException {
@@ -194,7 +207,11 @@ public class AdminMenu {
         int countClient = 0;
         for(Client client:clientService.listClients()) {
             countClient++;
-            sb.append(countClient).append(". Name: ").append(client.getName()).append(" Surname: ").append(client.getSurname()).append(" Phone: ").append(client.getPhone()).append("\n");
+            sb.append(countClient).append(". Name: ").append(client.getName()).
+                    append(" Surname: ").append(client.getSurname()).
+                    append(" Phone: ").append(client.getPhone()).
+                    append(" Age: ").append(client.getAge()).
+                    append(" Email: ").append(client.getEmail());
         }
         System.out.println(sb.toString());
         clientAdminOptions();

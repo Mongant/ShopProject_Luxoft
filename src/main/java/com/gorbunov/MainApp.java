@@ -41,7 +41,7 @@ import java.io.InputStreamReader;
 public class MainApp {
     public static void main(String[] args) throws IOException, BusinessException {
         ValidationService validationService = new ValidationServiceImpl();
-        ClientService clientService = new ClientServiceImpl(ClientDaoImpl.getInstans(), validationService);
+        ClientService clientService = new ClientServiceImpl(ClientDaoImpl.getInstance(), validationService);
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         MainMenu mainMenu = new MainMenu(bf, clientService);
         mainMenu.showMenu();
