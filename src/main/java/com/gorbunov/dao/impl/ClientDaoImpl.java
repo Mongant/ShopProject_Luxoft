@@ -50,4 +50,17 @@ public class ClientDaoImpl implements ClientDao {
             return false;
         }
     }
+
+    public boolean duplicatePhone(String phone) {
+        boolean duplicatePhone = false;
+        for(Map.Entry<Long, Client> pair : clients.entrySet()) {
+            if(phone.equals(pair.getValue().getPhone())) {
+                duplicatePhone = true;
+                break;
+            } else {
+                duplicatePhone = false;
+            }
+        }
+        return duplicatePhone;
+    }
 }

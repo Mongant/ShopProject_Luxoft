@@ -2,10 +2,10 @@ package com.gorbunov.view;
 
 import com.gorbunov.services.ClientService;
 import com.gorbunov.validator.BusinessException;
+import com.gorbunov.validator.ValidationServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class ClientMenu {
 
@@ -26,8 +26,8 @@ public class ClientMenu {
             String input = br.readLine();
             switch (input) {
                 case "1":
-                    System.out.println("Products");
-                    unavailableItem();
+                    System.out.println("Create client");
+                    createClient();
                     break;
                 case "2":
                     System.out.println("Shopping basket");
@@ -49,7 +49,7 @@ public class ClientMenu {
     }
 
     private void clientOptions() {
-        System.out.println("\n1. Products");
+        System.out.println("\n1. Create client");
         System.out.println("2. Shopping basket");
         System.out.println("3. Order");
         System.out.println("4. Modify information" );
@@ -72,6 +72,40 @@ public class ClientMenu {
                     System.out.println("Wrong input, try again!");
                     unavailableItem();
             }
+        }
+    }
+
+    private void createClient() {
+        try {
+            System.out.print("\nInput name: ");
+            String name = br.readLine();
+            System.out.print("Input surname: ");
+            String surname = br.readLine();
+            System.out.print("Input phone: ");
+            String phone = br.readLine();
+            if(!ValidationServiceImpl.validatePhoneNum(phone)) {
+                System.err.println("Incorrect phone number format! Enter the data again.");
+                createClient();
+            }
+            System.out.print("Input age: ");
+            int age = Integer.parseInt(br.readLine());
+            System.out.print("Input email: ");
+            String email = br.readLine();
+            if(!ValidationServiceImpl.validateEmail(email)) {
+                System.out.println("Incorrect email! Enter the data again.");
+                createClient();
+            }
+            clientService.createClient(name, surname, phone, age, email);
+            System.out.println("Client was created successfully!");
+            clientMenu();
+        } catch (BusinessException e) {
+            System.err.println("The age is incorrect!");
+            createClient();
+        } catch (NumberFormatException e) {
+            System.err.println("Incorrect input format age data!");
+            createClient();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -10,4 +10,5 @@ public interface ClientDao {
     List<Client>clientList();
     boolean modifyClient(long id);
     boolean deleteClient(long id);
+    boolean duplicatePhone(String phone);
 }
