@@ -76,10 +76,12 @@ public class AdminMenu {
             String input = br.readLine();
             switch (input) {
                 case "1":
+                    System.out.println("Create client");
                     createClient();
                     break;
                 case "2":
-                    clientService.modifyClient(120156);
+                    System.out.println("Modify client");
+                    modifyClient();
                     clientAdminOptions();
                     break;
                 case "3":
@@ -199,6 +201,42 @@ public class AdminMenu {
         }
     }
 
+    private void modifyClient() throws IOException {
+        System.out.print("Enter client id: ");
+        long id = Long.parseLong(br.readLine());
+        try {
+            System.out.print("\nInput name: ");
+            String name = br.readLine();
+            System.out.print("Input surname: ");
+            String surname = br.readLine();
+            System.out.print("Input phone: ");
+            String phone = br.readLine();
+            if(!ValidationServiceImpl.validatePhoneNum(phone)) {
+                System.err.println("Incorrect phone number format! Enter the data again.");
+                createClient();
+            }
+            System.out.print("Input age: ");
+            int age = Integer.parseInt(br.readLine());
+            System.out.print("Input email: ");
+            String email = br.readLine();
+            if(!ValidationServiceImpl.validateEmail(email)) {
+                System.out.println("Incorrect email! Enter the data again.");
+                createClient();
+            }
+            clientService.modifyClient(id, clientService.createClient(name, surname, phone, age, email));
+            System.out.println("Client was created successfully!");
+            clientAdminOptions();
+        } catch (BusinessException e) {
+            System.err.println("The age is incorrect!");
+            createClient();
+        } catch (NumberFormatException e) {
+            System.err.println("Incorrect input format age data!");
+            createClient();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void deleteClient() throws IOException {
         System.out.print("Enter client id: ");
         long id = Long.parseLong(br.readLine());
@@ -208,7 +246,7 @@ public class AdminMenu {
     private void showClientsList() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
         for(Client client:clientService.listClients()) {
-            sb.append("ID: ").append(client.getId()).
+            sb.append("\nID: ").append(client.getId()).
             append(". Name: ").append(client.getName()).
             append("; Surname: ").append(client.getSurname()).
             append("; Phone: ").append(client.getPhone()).

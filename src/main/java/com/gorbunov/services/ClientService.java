@@ -15,13 +15,13 @@ public interface ClientService {
      * */
     void createClient(String name, String surname, String phone);
 
-    void createClient(String name, String surname, String phone, int age, String email) throws BusinessException;
+    Client createClient(String name, String surname, String phone, int age, String email) throws BusinessException;
 
     /**
      * Method for modify data client by id
      * @param id customer unique identifier
      * */
-    void modifyClient(long id);
+    void modifyClient(long id, Client client);
 
     /**
      * Method for delete data client by id

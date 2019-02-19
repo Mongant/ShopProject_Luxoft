@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProductDao {
     void addProduct(Product product);
-    List<Product> listProducts();
-    boolean modifyProduct(long id);
+    List<Product> productList();
+    boolean modifyProduct(long id, Product product);
     boolean deleteProduct(long id);
 }

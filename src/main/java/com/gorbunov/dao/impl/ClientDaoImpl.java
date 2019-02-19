@@ -11,7 +11,7 @@ import java.util.Map;
 public class ClientDaoImpl implements ClientDao {
 
     private Map<Long, Client> clients = new HashMap<>();
-    private static long generatorId = 0;
+    private static long generatorId = 1;
     private static ClientDao clientDao = new ClientDaoImpl();
 
     private ClientDaoImpl() {
@@ -26,7 +26,9 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public void addClient(Client client) {
-        client.setId(generatorId++);
+        if(client.getId() == 0) {
+            client.setId(generatorId++);
+        }
         clients.put(client.getId(), client);
     }
 
@@ -36,8 +38,14 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public boolean modifyClient(long id) {
-        return true;
+    public boolean modifyClient(long id, Client client) {
+        Client value = clients.get(id);
+        if(value != null) {
+            clients.put(id, client);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -51,6 +59,7 @@ public class ClientDaoImpl implements ClientDao {
         }
     }
 
+    @Override
     public boolean duplicatePhone(String phone) {
         boolean duplicatePhone = false;
         for(Map.Entry<Long, Client> pair : clients.entrySet()) {

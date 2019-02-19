@@ -20,39 +20,39 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void createClient(String name, String phone, String surname) {
-
             Client client = new Client(name,surname, phone);
             clientDao.addClient(client);
-
-
     }
 
     @Override
-    public void createClient(String name, String surname, String phone, int age, String email) throws BusinessException {
+    public Client createClient(String name, String surname, String phone, int age, String email) throws BusinessException {
+        Client client = null;
         if(!clientDao.duplicatePhone(phone)) {
             validationService.validateAge(age);
-            Client client = new Client(name, surname, phone, age, email);
+            client = new Client(name, surname, phone, age, email);
             clientDao.addClient(client);
         } else {
             System.err.println("Phone number is not unique!");
         }
+        return client;
     }
 
     @Override
-    public void modifyClient(long id) {
-        if(clientDao.modifyClient(id)) {
-            System.out.println("Add some changes in client");
+    public void modifyClient(long id, Client client) {
+        client.setId(id);
+        if(clientDao.modifyClient(id, client)) {
+            System.out.println("Client id: " + id + " was modify successfully!");
         } else {
-            System.out.println("Something was wrong with modify client by id: " + id);
+            System.err.println("Client by id: " + id + " was not found!");
         }
     }
 
     @Override
     public void deleteClient(long id) {
         if(clientDao.deleteClient(id)) {
-            System.out.println("Client by ID: " + id + " was successfully deleted!");
+            System.out.println("Client by id: " + id + " was successfully deleted!");
         } else {
-            System.out.print("Client by ID: " + id + " was not found!");
+            System.err.print("Client by id: " + id + " was not found!");
         }
     }
 

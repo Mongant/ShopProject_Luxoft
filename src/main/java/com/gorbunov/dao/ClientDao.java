@@ -8,7 +8,7 @@ public interface ClientDao {
 
     void addClient(Client client);
     List<Client>clientList();
-    boolean modifyClient(long id);
+    boolean modifyClient(long id, Client client);
     boolean deleteClient(long id);
     boolean duplicatePhone(String phone);
 }
