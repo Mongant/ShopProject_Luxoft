@@ -191,6 +191,9 @@ public class AdminMenu {
         } catch (BusinessException e) {
             System.err.println("The age is incorrect!");
             createClient();
+        } catch (NumberFormatException e) {
+            System.err.println("Incorrect input format age data!");
+            createClient();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -204,14 +207,13 @@ public class AdminMenu {
 
     private void showClientsList() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
-        int countClient = 0;
         for(Client client:clientService.listClients()) {
-            countClient++;
-            sb.append(countClient).append(". Name: ").append(client.getName()).
-                    append(" Surname: ").append(client.getSurname()).
-                    append(" Phone: ").append(client.getPhone()).
-                    append(" Age: ").append(client.getAge()).
-                    append(" Email: ").append(client.getEmail());
+            sb.append("ID: ").append(client.getId()).
+            append(". Name: ").append(client.getName()).
+            append("; Surname: ").append(client.getSurname()).
+            append("; Phone: ").append(client.getPhone()).
+            append("; Age: ").append(client.getAge()).
+            append("; Email: ").append(client.getEmail());
         }
         System.out.println(sb.toString());
         clientAdminOptions();

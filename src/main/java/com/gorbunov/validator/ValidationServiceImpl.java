@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class ValidationServiceImpl implements ValidationService {
 
     private static final String REG_EMAIL_EXSPRESSION = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
-    private static final String REG_PHONE_NUMBER = "^[+]380[1-9]\\d{7,8}$";
+    private static final String REG_PHONE_NUMBER = "^(\\+380){1}(67|97|50)?[0-9]{7}";
 
     @Override
     public void validateAge(int age) throws BusinessException {

@@ -41,7 +41,13 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void deleteClient(long id) {
-        clients.remove(id);
+    public boolean deleteClient(long id) {
+        Client value = clients.get(id);
+        if(value != null) {
+            clients.remove(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

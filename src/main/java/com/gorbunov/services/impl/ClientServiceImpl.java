@@ -46,8 +46,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(long id) {
-        clientDao.deleteClient(id);
-        System.out.println("Client by id: " + id + "was deleted!");
+        if(clientDao.deleteClient(id)) {
+            System.out.println("Client by ID: " + id + " was successfully deleted!");
+        } else {
+            System.out.print("Client by ID: " + id + " was not found!");
+        }
     }
 
     @Override
