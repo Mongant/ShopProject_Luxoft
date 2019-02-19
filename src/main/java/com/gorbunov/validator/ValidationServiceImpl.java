@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class ValidationServiceImpl implements ValidationService {
 
-    private static final String REG_EMAIL_EXSPRESSION = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
+    private static final String REG_EMAIL = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
     private static final String REG_PHONE_NUMBER = "^(\\+380){1}(67|97|50)?[0-9]{7}";
 
     @Override
@@ -16,7 +16,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     public static boolean validateEmail(String email) {
-        Pattern pattern = Pattern.compile(REG_EMAIL_EXSPRESSION);
+        Pattern pattern = Pattern.compile(REG_EMAIL);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }

@@ -1,7 +1,6 @@
 package com.gorbunov.services.impl;
 
 import com.gorbunov.dao.ClientDao;
-import com.gorbunov.dao.impl.ClientDaoImpl;
 import com.gorbunov.domain.Client;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.validator.BusinessException;
@@ -30,9 +29,13 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void createClient(String name, String surname, String phone, int age, String email) throws BusinessException {
+        if(!clientDao.duplicatePhone(phone)) {
             validationService.validateAge(age);
             Client client = new Client(name, surname, phone, age, email);
             clientDao.addClient(client);
+        } else {
+            System.err.println("Phone number is not unique!");
+        }
     }
 
     @Override
