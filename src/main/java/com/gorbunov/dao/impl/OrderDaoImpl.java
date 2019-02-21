@@ -1,28 +1,44 @@
 package com.gorbunov.dao.impl;
 
 import com.gorbunov.dao.OrderDao;
+import com.gorbunov.domain.Client;
 import com.gorbunov.domain.Order;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderDaoImpl implements OrderDao {
 
-    static List<Order> orders = new ArrayList<>();
+    private Map<Long, Order> orders = new HashMap<>();
+    private static long generatorId = 1;
+    private static OrderDao orderDao = new OrderDaoImpl();
+
+    private OrderDaoImpl() {
+    }
+
+    public static OrderDao getInstance() {
+        if(orderDao == null) {
+            orderDao = new OrderDaoImpl();
+        }
+        return orderDao;
+     }
 
     @Override
     public void addOrders(Order order) {
-        orders.add(order);
+        generatorId++;
+        orders.put(generatorId, order);
     }
 
     @Override
     public List<Order> listOrders() {
-        return orders;
+        return new ArrayList<>(orders.values());
     }
 
     @Override
-    public boolean modifyOrder(long id) {
-        return true;
+    public boolean modifyOrder(long id, Order order) {
+        return false;
     }
 
     @Override

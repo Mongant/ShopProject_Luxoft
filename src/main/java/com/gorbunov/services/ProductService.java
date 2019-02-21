@@ -1,5 +1,9 @@
 package com.gorbunov.services;
 
+import com.gorbunov.domain.Product;
+
+import java.util.List;
+
 public interface ProductService {
 
     /**
@@ -8,17 +12,19 @@ public interface ProductService {
      * @param description sets the description for product
      * @param price sets the price for product
      * */
-    void createProduct(String name, String description, float price);
+    Product createProduct(String name, String description, float price);
 
     /**
      * Method for modify data product by id
      * @param id product unique identifier
      * */
-    void modifyProduct(long id);
+    void modifyProduct(long id, Product product);
 
     /**
      * Method for modify data product by id
      * @param id product unique identifier
      * */
     void deleteProduct(long id);
+
+    List<Product> productList();
 }

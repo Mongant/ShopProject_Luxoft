@@ -1,8 +1,9 @@
 package com.gorbunov.view;
 
 import com.gorbunov.services.ClientService;
+import com.gorbunov.services.OrderService;
+import com.gorbunov.services.ProductService;
 import com.gorbunov.validator.BusinessException;
-import com.gorbunov.validator.ValidationServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,10 +12,14 @@ public class ClientMenu {
 
     private BufferedReader br;
     private ClientService clientService;
+    private ProductService productService;
+    private OrderService orderService;
 
-    public ClientMenu(BufferedReader br, ClientService clientService) {
+    public ClientMenu(BufferedReader br, ClientService clientService, ProductService productService, OrderService orderService) {
         this.br = br;
         this.clientService = clientService;
+        this.productService = productService;
+        this.orderService = orderService;
     }
 
     public void clientMenu() throws IOException, BusinessException {
@@ -39,7 +44,7 @@ public class ClientMenu {
                     break;
                 case "0":
                     System.out.println("Main menu");
-                    new MainMenu(br, clientService).showMenu();
+                    new MainMenu(br, clientService, productService, orderService).showMenu();
                     break;
                 default:
                     System.out.println("Wrong input, try again!");
@@ -83,18 +88,10 @@ public class ClientMenu {
             String surname = br.readLine();
             System.out.print("Input phone: ");
             String phone = br.readLine();
-            if(!ValidationServiceImpl.validatePhoneNum(phone)) {
-                System.err.println("Incorrect phone number format! Enter the data again.");
-                createClient();
-            }
             System.out.print("Input age: ");
             int age = Integer.parseInt(br.readLine());
             System.out.print("Input email: ");
             String email = br.readLine();
-            if(!ValidationServiceImpl.validateEmail(email)) {
-                System.out.println("Incorrect email! Enter the data again.");
-                createClient();
-            }
             clientService.createClient(name, surname, phone, age, email);
             System.out.println("Client was created successfully!");
             clientMenu();

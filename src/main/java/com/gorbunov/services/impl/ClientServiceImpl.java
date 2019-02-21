@@ -29,6 +29,8 @@ public class ClientServiceImpl implements ClientService {
         Client client = null;
         if(!clientDao.duplicatePhone(phone)) {
             validationService.validateAge(age);
+            validationService.validatePhoneNum(phone);
+            validationService.validateEmail(email);
             client = new Client(name, surname, phone, age, email);
             clientDao.addClient(client);
         } else {

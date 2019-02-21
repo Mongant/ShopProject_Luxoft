@@ -15,15 +15,21 @@ public class ValidationServiceImpl implements ValidationService {
         }
     }
 
-    public static boolean validateEmail(String email) {
+    @Override
+    public void validateEmail(String email) throws BusinessException {
         Pattern pattern = Pattern.compile(REG_EMAIL);
         Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        if(!matcher.matches()) {
+            throw new BusinessException("Incorrect email format!");
+        }
     }
 
-    public static boolean validatePhoneNum(String phoneNum) {
+    @Override
+    public void validatePhoneNum(String phoneNum) throws BusinessException {
         Pattern pattern = Pattern.compile(REG_PHONE_NUMBER);
         Matcher matcher = pattern.matcher(phoneNum);
-        return matcher.matches();
+        if(!matcher.matches()) {
+            throw new BusinessException("Incorrect phone format!");
+        }
     }
 }

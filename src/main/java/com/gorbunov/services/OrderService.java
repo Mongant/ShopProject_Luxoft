@@ -1,6 +1,7 @@
 package com.gorbunov.services;
 
 import com.gorbunov.domain.Client;
+import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface OrderService {
      * Method for modify order by id
      * @param id order unique identifier
      * */
-    void modifyOrder(long id);
+    void modifyOrder(long id, Order order);
 
     /**
      * Method for delete order by id

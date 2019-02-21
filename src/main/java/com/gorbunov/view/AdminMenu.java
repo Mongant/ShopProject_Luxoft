@@ -1,13 +1,11 @@
 package com.gorbunov.view;
 
 import com.gorbunov.domain.Client;
+import com.gorbunov.domain.Product;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductService;
-import com.gorbunov.services.impl.OrderServiceImpl;
-import com.gorbunov.services.impl.ProductServiceImpl;
 import com.gorbunov.validator.BusinessException;
-import com.gorbunov.validator.ValidationServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,14 +13,15 @@ import java.io.IOException;
 public class AdminMenu {
 
     private BufferedReader br;
-
     private ClientService clientService;
-    private final ProductService productService = new ProductServiceImpl();
-    private final OrderService orderService = new OrderServiceImpl();
+    private ProductService productService;
+    private OrderService orderService;
 
-    public AdminMenu(BufferedReader br, ClientService clientService) {
+    public AdminMenu(BufferedReader br, ClientService clientService, ProductService productService, OrderService orderService) {
         this.br = br;
         this.clientService = clientService;
+        this.productService = productService;
+        this.orderService = orderService;
     }
 
     public void adminMenu() throws IOException, BusinessException {
@@ -46,7 +45,7 @@ public class AdminMenu {
                     orderAdminOptions();
                     break;
                 case "0":
-                    new MainMenu(br, clientService).showMenu();
+                    new MainMenu(br, clientService, productService, orderService).showMenu();
                     break;
                 default:
                     System.out.println("Wrong input, try again!");
@@ -107,6 +106,7 @@ public class AdminMenu {
         System.out.println("\n1. Add product");
         System.out.println("2. Modify product");
         System.out.println("3. Delete product");
+        System.out.println("4. Product list");
         System.out.println("0. Return in admin menu");
 
         while (isRunning) {
@@ -117,12 +117,15 @@ public class AdminMenu {
                     createProduct();
                     break;
                 case "2":
-                    productService.modifyProduct(120156);
+                    modifyProduct();
                     productAdminOptions();
                     break;
                 case "3":
                     productService.deleteProduct(120156);
                     productAdminOptions();
+                    break;
+                case "4":
+                    showProductList();
                     break;
                 case "0":
                     adminMenu();
@@ -150,7 +153,7 @@ public class AdminMenu {
                     createOrder();
                     break;
                 case "2":
-                    orderService.modifyOrder(120156);
+                    modifyOrder();
                     orderAdminOptions();
                     break;
                 case "3":
@@ -175,23 +178,15 @@ public class AdminMenu {
             String surname = br.readLine();
             System.out.print("Input phone: ");
             String phone = br.readLine();
-            if(!ValidationServiceImpl.validatePhoneNum(phone)) {
-                System.err.println("Incorrect phone number format! Enter the data again.");
-                createClient();
-            }
             System.out.print("Input age: ");
             int age = Integer.parseInt(br.readLine());
             System.out.print("Input email: ");
             String email = br.readLine();
-            if(!ValidationServiceImpl.validateEmail(email)) {
-                System.out.println("Incorrect email! Enter the data again.");
-                createClient();
-            }
             clientService.createClient(name, surname, phone, age, email);
             System.out.println("Client was created successfully!");
             clientAdminOptions();
         } catch (BusinessException e) {
-            System.err.println("The age is incorrect!");
+            System.err.println(e.getMessage());
             createClient();
         } catch (NumberFormatException e) {
             System.err.println("Incorrect input format age data!");
@@ -211,23 +206,15 @@ public class AdminMenu {
             String surname = br.readLine();
             System.out.print("Input phone: ");
             String phone = br.readLine();
-            if(!ValidationServiceImpl.validatePhoneNum(phone)) {
-                System.err.println("Incorrect phone number format! Enter the data again.");
-                createClient();
-            }
             System.out.print("Input age: ");
             int age = Integer.parseInt(br.readLine());
             System.out.print("Input email: ");
             String email = br.readLine();
-            if(!ValidationServiceImpl.validateEmail(email)) {
-                System.out.println("Incorrect email! Enter the data again.");
-                createClient();
-            }
             clientService.modifyClient(id, clientService.createClient(name, surname, phone, age, email));
             System.out.println("Client was created successfully!");
             clientAdminOptions();
         } catch (BusinessException e) {
-            System.err.println("The age is incorrect!");
+            System.err.println(e.getMessage());
             createClient();
         } catch (NumberFormatException e) {
             System.err.println("Incorrect input format age data!");
@@ -246,7 +233,7 @@ public class AdminMenu {
     private void showClientsList() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
         for(Client client:clientService.listClients()) {
-            sb.append("\nID: ").append(client.getId()).
+            sb.append("\nId: ").append(client.getId()).
             append(". Name: ").append(client.getName()).
             append("; Surname: ").append(client.getSurname()).
             append("; Phone: ").append(client.getPhone()).
@@ -254,7 +241,7 @@ public class AdminMenu {
             append("; Email: ").append(client.getEmail());
         }
         System.out.println(sb.toString());
-        clientAdminOptions();
+        productAdminOptions();
     }
 
     private void createProduct() throws IOException, BusinessException {
@@ -263,11 +250,39 @@ public class AdminMenu {
         System.out.print("Input product description: ");
         String description = br.readLine();
         System.out.print("Input price: ");
-        float price = br.read();
+        float price = Float.parseFloat(br.readLine());
 
         productService.createProduct(productName, description, price);
         System.out.println("Product was created successfully!");
         productAdminOptions();
+    }
+
+    private void showProductList() throws IOException, BusinessException {
+        StringBuilder sb = new StringBuilder();
+        for(Product product : productService.productList()) {
+            sb.append("\n Id: ").append(product.getId())
+                    .append(" Product name: ").append(product.getName())
+                    .append(" Description: ").append(product.getDescription())
+                    .append(" Price: ").append(product.getPrice()).append("\n");
+        }
+        System.out.println(sb.toString());
+        productAdminOptions();
+    }
+
+    private void modifyProduct() throws IOException {
+        System.out.print("Enter product id: ");
+        long id = Long.parseLong(br.readLine());
+        try {
+            System.out.print("Input product name: ");
+            String productName = br.readLine();
+            System.out.print("Input product description: ");
+            String description = br.readLine();
+            System.out.print("Input price: ");
+            float price = br.read();
+            productService.modifyProduct(id, productService.createProduct(productName, description, price));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createOrder() throws IOException, BusinessException {
@@ -278,8 +293,12 @@ public class AdminMenu {
         System.out.print("Input amount: ");
         float amount = br.read();
 
-//        orderService.createOrder(client, products, amount);
+//      orderService.createOrder(client, products, amount);
         System.out.println("Product was created successfully!");
         orderAdminOptions();
+    }
+
+    private void modifyOrder(){
+
     }
 }
