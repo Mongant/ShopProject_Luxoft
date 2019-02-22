@@ -3,6 +3,7 @@ package com.gorbunov.dao.impl;
 import com.gorbunov.dao.OrderDao;
 import com.gorbunov.domain.Client;
 import com.gorbunov.domain.Order;
+import com.gorbunov.domain.Product;
 
 import java.util.ArrayList;
 import java.util.HashMap;

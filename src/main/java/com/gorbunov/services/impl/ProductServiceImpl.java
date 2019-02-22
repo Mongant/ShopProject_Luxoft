@@ -5,15 +5,18 @@ import com.gorbunov.dao.impl.ProductDaoImpl;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.ProductService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductServiceImpl implements ProductService {
 
     ProductDao productDao = ProductDaoImpl.getInstance();
+    private Map<Long, List<Product>> productBasket = new HashMap<>();
 
     @Override
     public Product createProduct(String name, String description, float price) {
-        Product product = null;
+        Product product;
         product = new Product(name, description, price);
         productDao.addProduct(product);
         return product;
@@ -22,18 +25,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void modifyProduct(long id, Product product) {
         if(productDao.modifyProduct(id, product)) {
-            System.out.println("Add some changes in product id: " + id);
+            System.out.println("Product by id: " + id + " was modify!");
         } else {
-            System.out.println("Something was wrong with modify product by id: " + id);
+            System.err.println("Product by id: " + id + " was not found!");
         }
     }
 
     @Override
     public void deleteProduct(long id) {
         if(productDao.deleteProduct(id)) {
-            System.out.println("Order by id: " + id + " was removed!");
+            System.out.println("Product by id: " + id + " was removed!");
         } else {
-            System.out.println("Something was wrong with delete product by id: " + id);
+            System.err.println("Product by id: " + id + " was not found!");
         }
     }
 

@@ -121,7 +121,7 @@ public class AdminMenu {
                     productAdminOptions();
                     break;
                 case "3":
-                    productService.deleteProduct(120156);
+                    deleteProduct();
                     productAdminOptions();
                     break;
                 case "4":
@@ -241,7 +241,7 @@ public class AdminMenu {
             append("; Email: ").append(client.getEmail());
         }
         System.out.println(sb.toString());
-        productAdminOptions();
+        clientAdminOptions();
     }
 
     private void createProduct() throws IOException, BusinessException {
@@ -257,13 +257,19 @@ public class AdminMenu {
         productAdminOptions();
     }
 
+    private void deleteProduct() throws IOException {
+        System.out.print("Enter product id: ");
+        long id = Long.parseLong(br.readLine());
+        productService.deleteProduct(id);
+    }
+
     private void showProductList() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
         for(Product product : productService.productList()) {
-            sb.append("\n Id: ").append(product.getId())
-                    .append(" Product name: ").append(product.getName())
-                    .append(" Description: ").append(product.getDescription())
-                    .append(" Price: ").append(product.getPrice()).append("\n");
+            sb.append("\nId: ").append(product.getId())
+                    .append("; Product name: ").append(product.getName())
+                    .append("; Description: ").append(product.getDescription())
+                    .append("; Price: ").append(product.getPrice());
         }
         System.out.println(sb.toString());
         productAdminOptions();

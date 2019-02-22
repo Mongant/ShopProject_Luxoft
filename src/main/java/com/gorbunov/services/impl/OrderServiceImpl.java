@@ -7,11 +7,14 @@ import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.OrderService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderServiceImpl implements OrderService {
 
     OrderDao orderDao = OrderDaoImpl.getInstance();
+    private Map<Long, Product> productsListOrder = new HashMap<>();
 
     @Override
     public void createOrder(Client client, List<Product> products, float amount) {
