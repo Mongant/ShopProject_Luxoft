@@ -34,7 +34,13 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void appProductBasket(Product product) {
+    public Product getProduct(long id) {
+        return products.get(id);
+    }
+
+
+    @Override
+    public void addProductBasket(Product product) {
         productBasket.add(product);
     }
 

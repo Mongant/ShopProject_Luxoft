@@ -39,7 +39,7 @@ public class ClientMenu {
                     break;
                 case "2":
                     System.out.println("Shopping");
-                    shopingBacet();
+                    shoppingBasket();
                     break;
                 case "0":
                     System.out.println("Main menu");
@@ -87,7 +87,7 @@ public class ClientMenu {
         }
     }
 
-    private void shopingBacet() throws IOException, BusinessException {
+    private void shoppingBasket() throws IOException, BusinessException {
         boolean isRunning = true;
 
         System.out.println("\n1. Show products");
@@ -127,7 +127,7 @@ public class ClientMenu {
                     break;
                 default:
                     System.out.println("Wrong input, try again!");
-                    shopingBacet();
+                    shoppingBasket();
             }
         }
     }
@@ -141,14 +141,14 @@ public class ClientMenu {
                     .append("; Price: ").append(product.getPrice());
         }
         System.out.println(sb.toString());
-        shopingBacet();
+        shoppingBasket();
     }
 
     private void addProductBasket() throws IOException, BusinessException {
         System.out.print("Enter product id: ");
         long id = Long.parseLong(br.readLine());
         productService.addProductBasket(id);
-        shopingBacet();
+        shoppingBasket();
     }
 
     private void showPurchases() throws IOException, BusinessException {
@@ -160,7 +160,7 @@ public class ClientMenu {
                     .append("; Price: ").append(product.getPrice());
         }
         System.out.println(sb.toString());
-        shopingBacet();
+        shoppingBasket();
     }
 
     private void showOrder() throws IOException, BusinessException {
@@ -177,6 +177,6 @@ public class ClientMenu {
         sb.append("\nThank you for your purchase!");
         sb.append("\n---------------------------------------------------\n");
         System.out.println(sb.toString());
-        shopingBacet();
+        shoppingBasket();
     }
 }

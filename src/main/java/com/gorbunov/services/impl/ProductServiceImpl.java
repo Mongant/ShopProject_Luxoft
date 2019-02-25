@@ -19,6 +19,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getProduct(long id) {
+        return productDao.getProduct(id);
+    }
+
+    @Override
     public void modifyProduct(long id, String name, String description, float price) {
         Product product = new Product(name, description, price);
         product.setId(id);
@@ -56,6 +61,4 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> showProductBasket() {
         return productDao.showProductBasket();
     }
-
-
 }

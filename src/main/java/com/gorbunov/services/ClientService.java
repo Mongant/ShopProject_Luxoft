@@ -13,9 +13,10 @@ public interface ClientService {
      * @param surname sets the client surname
      * @param phone sets the client phone
      * */
-    void createClient(String name, String surname, String phone);
 
     Client createClient(String name, String surname, String phone, int age, String email) throws BusinessException;
+
+    Client getClient(long id);
 
     /**
      * Method for modify data client by id

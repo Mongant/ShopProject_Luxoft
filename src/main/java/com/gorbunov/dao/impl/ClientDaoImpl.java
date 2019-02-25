@@ -33,6 +33,11 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
+    public Client getClient(long id) {
+        return clients.get(id);
+    }
+
+    @Override
     public List<Client> clientList() {
         return new ArrayList<>(clients.values());
     }

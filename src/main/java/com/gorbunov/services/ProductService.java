@@ -14,6 +14,8 @@ public interface ProductService {
      * */
     Product createProduct(String name, String description, float price);
 
+    Product getProduct(long id);
+
     /**
      * Method for modify data product by id
      * @param id product unique identifier

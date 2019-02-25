@@ -1,6 +1,7 @@
 package com.gorbunov.view.admin;
 
 import com.gorbunov.domain.Client;
+import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
@@ -149,9 +150,8 @@ public class AdminMenu {
         boolean isRunning = true;
 
         System.out.println("\n1. Create order");
-        System.out.println("2. Modify content");
-        System.out.println("3. Delete order");
-        System.out.println("4. Show all orders");
+        System.out.println("2. Delete order");
+        System.out.println("3. Show all orders");
         System.out.println("0. Return in admin menu");
 
         while (isRunning) {
@@ -159,18 +159,17 @@ public class AdminMenu {
             String input = br.readLine();
             switch (input) {
                 case "1":
-                    createOrder();
+                    System.out.println("Create order");
+                    orderMenu();
                     break;
                 case "2":
-                    modifyOrder();
+                    System.out.println("Delete order");
+                    deleteOrder();
                     orderAdminOptions();
                     break;
                 case "3":
-                    orderService.deleteOrder(120156);
-                    orderAdminOptions();
-                    break;
-                case "4":
-                    orderService.listOrders();
+                    System.out.println("Show all orders");
+                    showOrderList();
                     orderAdminOptions();
                     break;
                 case "0":
@@ -301,27 +300,97 @@ public class AdminMenu {
             System.out.print("Input product description: ");
             String description = br.readLine();
             System.out.print("Input price: ");
-            float price = br.read();
+            float price = Float.parseFloat(br.readLine());
             productService.modifyProduct(id, productName, description, price);
         } catch (NumberFormatException e) {
             System.err.println("Incorrect data entered!");
         }
     }
 
-    private void createOrder() throws IOException, BusinessException {
-        System.out.print("Input client id: ");
-        String client = br.readLine();
-        System.out.print("Input products id: ");
-        String products = br.readLine();
-        System.out.print("Input amount: ");
-        float amount = br.read();
+    private void orderMenu() throws IOException, BusinessException {
 
-//      orderService.createOrder(client, products, amount);
+        boolean isRunning = true;
+
+        System.out.println("\n1. Add products in order");
+        System.out.println("2. Create order");
+        System.out.println("3. Show all orders");
+        System.out.println("0. Return in admin menu");
+
+        while (isRunning) {
+            System.out.print("\nSelect your choice => ");
+            String input = br.readLine();
+            switch (input) {
+                case "1":
+                    System.out.println("Add products in order");
+                    addProductInOrder();
+                    break;
+                case "2":
+                    System.out.println("Create order");
+                    createOrder();
+                    orderAdminOptions();
+                    break;
+                case "3":
+                    System.out.println("Show all orders");
+                    showOrderList();
+                    orderAdminOptions();
+                    break;
+                case "0":
+                    adminMenu();
+                    break;
+                default:
+                    System.err.println("Wrong input, try again!");
+                    orderAdminOptions();
+            }
+        }
+
+        System.out.print("Input client id: ");
+        long id = Long.parseLong(br.readLine());
+        addProductInOrder();
+        orderService.createOrder(clientService.getClient(id), productService.productList());
         System.out.println("Product was created successfully!");
         orderAdminOptions();
     }
 
-    private void modifyOrder(){
+    private void addProductInOrder() throws IOException, BusinessException {
+        System.out.print("Enter product id: ");
+        long id = Long.parseLong(br.readLine());
+        productService.addProductBasket(id);
+        orderMenu();
+    }
 
+    private void createOrder() throws IOException, BusinessException {
+        StringBuilder sb = new StringBuilder();
+        System.out.print("Input client id: ");
+        long id = Long.parseLong(br.readLine());
+        Order order = orderService.showOrder(clientService.getClient(id), productService.showProductBasket());
+        orderService.createOrder(clientService.getClient(id), productService.productList());
+        sb.append("\n---------------------------------------------------\n");
+        sb.append("Client name: ").append(order.getClient().getName());
+        sb.append("\nClient surname: ").append(order.getClient().getSurname());
+        sb.append("\nProducts: \n");
+        for(Product product : order.getProducts()) {
+            sb.append(product.toString()).append("\n");
+        }
+        sb.append("\nAmount: ").append(order.getAmount());
+        sb.append("\nThank you for your purchase!");
+        sb.append("\n---------------------------------------------------\n");
+        System.out.println(sb.toString());
+        orderAdminOptions();
+    }
+
+    private void showOrderList() {
+        StringBuilder sb = new StringBuilder();
+        for(Order order : orderService.listOrders()) {
+            sb.append("\nOrder id: ").append(order.getId())
+                    .append(order.getClient())
+                    .append(order.getProducts());
+        }
+        System.out.println(sb.toString());
+    }
+
+    private void deleteOrder() throws IOException {
+        System.out.print("Enter product id: ");
+        long id = Long.parseLong(br.readLine());
+        orderService.deleteOrder(id);
     }
 }

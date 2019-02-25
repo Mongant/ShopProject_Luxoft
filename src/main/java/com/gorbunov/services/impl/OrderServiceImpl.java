@@ -45,13 +45,17 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setAmount(amount);
         orderDao.addOrders(order);
+        orderDao.addOrders(order);
         return orderDao.showOrder();
     }
 
     @Override
     public List<Order> listOrders() {
-        return orderDao.listOrders();
+        if(!orderDao.listOrders().isEmpty()) {
+            return orderDao.listOrders();
+        } else {
+            System.out.println("Order list is empty!");
+            return orderDao.listOrders();
+        }
     }
-
-
 }

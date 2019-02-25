@@ -19,12 +19,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void createClient(String name, String phone, String surname) {
-            Client client = new Client(name,surname, phone);
-            clientDao.addClient(client);
-    }
-
-    @Override
     public Client createClient(String name, String surname, String phone, int age, String email) throws BusinessException {
         Client client = null;
         if(!clientDao.duplicatePhone(phone)) {
@@ -38,6 +32,11 @@ public class ClientServiceImpl implements ClientService {
             System.err.println("Phone number is not unique!");
         }
         return client;
+    }
+
+    @Override
+    public Client getClient(long id) {
+        return clientDao.getClient(id);
     }
 
     @Override

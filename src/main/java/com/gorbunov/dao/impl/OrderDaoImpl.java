@@ -11,7 +11,7 @@ import java.util.Map;
 public class OrderDaoImpl implements OrderDao {
 
     private Map<Long, Order> orders = new HashMap<>();
-    private static long generatorId;
+    private static long generatorId = 1;
     private static OrderDao orderDao = new OrderDaoImpl();
 
     private OrderDaoImpl() {
@@ -42,7 +42,13 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean deleteOrder(long id) {
-        return true;
+        Order value = orders.get(id);
+        if(value != null) {
+            orders.remove(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
