@@ -9,4 +9,5 @@ public interface OrderDao {
     List<Order> listOrders();
     boolean modifyOrder(long id, Order order);
     boolean deleteOrder(long id);
+    Order showOrder();
 }

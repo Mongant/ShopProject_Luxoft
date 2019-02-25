@@ -1,9 +1,7 @@
 package com.gorbunov.dao.impl;
 
 import com.gorbunov.dao.OrderDao;
-import com.gorbunov.domain.Client;
 import com.gorbunov.domain.Order;
-import com.gorbunov.domain.Product;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +11,7 @@ import java.util.Map;
 public class OrderDaoImpl implements OrderDao {
 
     private Map<Long, Order> orders = new HashMap<>();
-    private static long generatorId = 1;
+    private static long generatorId;
     private static OrderDao orderDao = new OrderDaoImpl();
 
     private OrderDaoImpl() {
@@ -45,5 +43,11 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public boolean deleteOrder(long id) {
         return true;
+    }
+
+    @Override
+    public Order showOrder() {
+        long id = orders.size();
+        return orders.get(id);
     }
 }

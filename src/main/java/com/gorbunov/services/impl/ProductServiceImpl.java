@@ -5,29 +5,27 @@ import com.gorbunov.dao.impl.ProductDaoImpl;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.ProductService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ProductServiceImpl implements ProductService {
 
     ProductDao productDao = ProductDaoImpl.getInstance();
-    private Map<Long, List<Product>> productBasket = new HashMap<>();
 
     @Override
     public Product createProduct(String name, String description, float price) {
-        Product product;
-        product = new Product(name, description, price);
+        Product product = new Product(name, description, price);
         productDao.addProduct(product);
         return product;
     }
 
     @Override
-    public void modifyProduct(long id, Product product) {
+    public void modifyProduct(long id, String name, String description, float price) {
+        Product product = new Product(name, description, price);
+        product.setId(id);
         if(productDao.modifyProduct(id, product)) {
-            System.out.println("Product by id: " + id + " was modify!");
+            System.out.println("Client id: " + id + " was modify successfully!");
         } else {
-            System.err.println("Product by id: " + id + " was not found!");
+            System.err.println("Client by id: " + id + " was not found!");
         }
     }
 
@@ -42,6 +40,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> productList() {
+        if(!productDao.productList().isEmpty()){
+            return productDao.productList();
+        }
+        System.out.println("Product list is empty!");
         return productDao.productList();
     }
+
+    @Override
+    public void addProductBasket(long id) {
+        productDao.addProductBasket(id);
+    }
+
+    @Override
+    public List<Product> showProductBasket() {
+        return productDao.showProductBasket();
+    }
+
+
 }

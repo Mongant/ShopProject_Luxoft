@@ -21,7 +21,7 @@ public interface ClientService {
      * Method for modify data client by id
      * @param id customer unique identifier
      * */
-    void modifyClient(long id, Client client);
+    void modifyClient(long id, String name, String surname, String phone, int age, String email) throws BusinessException;
 
     /**
      * Method for delete data client by id

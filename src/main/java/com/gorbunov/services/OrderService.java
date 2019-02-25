@@ -12,9 +12,8 @@ public interface OrderService {
      * Create new custom order for products
      * @param client sets the client information
      * @param products sets the producs list
-     * @param amount sets the amount of the purchase
      * */
-    void createOrder(Client client, List<Product> products, float amount);
+    void createOrder(Client client, List<Product> products);
 
     /**
      * Method for modify order by id
@@ -27,4 +26,8 @@ public interface OrderService {
      * @param id order unique identifier
      * */
     void deleteOrder(long id);
+
+    Order showOrder(Client client, List<Product> products);
+
+    List<Order> listOrders();
 }

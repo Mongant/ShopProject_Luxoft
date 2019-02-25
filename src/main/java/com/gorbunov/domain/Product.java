@@ -1,7 +1,5 @@
 package com.gorbunov.domain;
 
-import java.math.BigDecimal;
-
 public class Product {
 
     private long id = 0;

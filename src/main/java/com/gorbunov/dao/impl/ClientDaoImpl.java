@@ -40,7 +40,7 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public boolean modifyClient(long id, Client client) {
         Client value = clients.get(id);
-        if(value != null) { //логика проверки перенесена в сервис
+        if(value != null) {
             clients.put(id, client);
             return true;
         } else {

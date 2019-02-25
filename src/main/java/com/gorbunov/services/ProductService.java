@@ -18,7 +18,7 @@ public interface ProductService {
      * Method for modify data product by id
      * @param id product unique identifier
      * */
-    void modifyProduct(long id, Product product);
+    void modifyProduct(long id, String name, String description, float price);
 
     /**
      * Method for modify data product by id
@@ -27,4 +27,8 @@ public interface ProductService {
     void deleteProduct(long id);
 
     List<Product> productList();
+
+    void addProductBasket(long id);
+
+    List<Product> showProductBasket();
 }

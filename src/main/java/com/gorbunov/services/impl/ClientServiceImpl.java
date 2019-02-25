@@ -33,6 +33,7 @@ public class ClientServiceImpl implements ClientService {
             validationService.validateEmail(email);
             client = new Client(name, surname, phone, age, email);
             clientDao.addClient(client);
+            System.out.println("Client was created successfully!");
         } else {
             System.err.println("Phone number is not unique!");
         }
@@ -40,7 +41,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void modifyClient(long id, Client client) {
+    public void modifyClient(long id, String name, String surname, String phone, int age, String email) throws BusinessException {
+        validationService.validateAge(age);
+        validationService.validatePhoneNum(phone);
+        validationService.validateEmail(email);
+        Client client = new Client(name, surname, phone, age, email);
         client.setId(id);
         if(clientDao.modifyClient(id, client)) {
             System.out.println("Client id: " + id + " was modify successfully!");
@@ -54,12 +59,16 @@ public class ClientServiceImpl implements ClientService {
         if(clientDao.deleteClient(id)) {
             System.out.println("Client by id: " + id + " was successfully deleted!");
         } else {
-            System.err.print("Client by id: " + id + " was not found!");
+            System.err.println("Client by id: " + id + " was not found!");
         }
     }
 
     @Override
     public List<Client> listClients() {
+        if(!clientDao.clientList().isEmpty()){
+            return clientDao.clientList();
+        }
+        System.err.println("Client list is empty!");
         return clientDao.clientList();
     }
 }

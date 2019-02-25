@@ -7,18 +7,15 @@ import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.OrderService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OrderServiceImpl implements OrderService {
 
     OrderDao orderDao = OrderDaoImpl.getInstance();
-    private Map<Long, Product> productsListOrder = new HashMap<>();
 
     @Override
-    public void createOrder(Client client, List<Product> products, float amount) {
-        Order order = new Order(client, products, amount);
+    public void createOrder(Client client, List<Product> products) {
+        Order order = new Order(client, products);
         orderDao.addOrders(order);
     }
 
@@ -38,4 +35,23 @@ public class OrderServiceImpl implements OrderService {
             System.out.println("Something was wrong with delete order by id: " + id);
         }
     }
+
+    @Override
+    public Order showOrder(Client client, List<Product> products) {
+        float amount = 0;
+        Order order = new Order(client, products);
+        for(Product product : products) {
+            amount = product.getPrice() + amount;
+        }
+        order.setAmount(amount);
+        orderDao.addOrders(order);
+        return orderDao.showOrder();
+    }
+
+    @Override
+    public List<Order> listOrders() {
+        return orderDao.listOrders();
+    }
+
+
 }
