@@ -313,7 +313,6 @@ public class AdminMenu {
 
         System.out.println("\n1. Add products in order");
         System.out.println("2. Create order");
-        System.out.println("3. Show all orders");
         System.out.println("0. Return in admin menu");
 
         while (isRunning) {
@@ -327,11 +326,6 @@ public class AdminMenu {
                 case "2":
                     System.out.println("Create order");
                     createOrder();
-                    orderAdminOptions();
-                    break;
-                case "3":
-                    System.out.println("Show all orders");
-                    showOrderList();
                     orderAdminOptions();
                     break;
                 case "0":
@@ -359,23 +353,30 @@ public class AdminMenu {
     }
 
     private void createOrder() throws IOException, BusinessException {
-        StringBuilder sb = new StringBuilder();
-        System.out.print("Input client id: ");
-        long id = Long.parseLong(br.readLine());
-        Order order = orderService.showOrder(clientService.getClient(id), productService.showProductBasket());
-        orderService.createOrder(clientService.getClient(id), productService.productList());
-        sb.append("\n---------------------------------------------------\n");
-        sb.append("Client name: ").append(order.getClient().getName());
-        sb.append("\nClient surname: ").append(order.getClient().getSurname());
-        sb.append("\nProducts: \n");
-        for(Product product : order.getProducts()) {
-            sb.append(product.toString()).append("\n");
+        try {
+            StringBuilder sb = new StringBuilder();
+            System.out.print("Input client id: ");
+            long id = Long.parseLong(br.readLine());
+            Order order = orderService.showOrder(clientService.getClient(id), productService.showProductBasket());
+            orderService.createOrder(clientService.getClient(id), productService.productList());
+            sb.append("\n---------------------------------------------------\n");
+            sb.append("Client name: ").append(order.getClient().getName());
+            sb.append("\nClient surname: ").append(order.getClient().getSurname());
+            sb.append("\nProducts: \n");
+            for(Product product : order.getProducts()) {
+                sb.append(product.toString()).append("\n");
+            }
+            sb.append("\nAmount: ").append(order.getAmount());
+            sb.append("\nThank you for your purchase!");
+            sb.append("\n---------------------------------------------------\n");
+            System.out.println(sb.toString());
+            orderAdminOptions();
+        } catch (NullPointerException e) {
+            orderMenu();
+        } catch (NumberFormatException e) {
+            System.err.println("Incorrect data entered!");
         }
-        sb.append("\nAmount: ").append(order.getAmount());
-        sb.append("\nThank you for your purchase!");
-        sb.append("\n---------------------------------------------------\n");
-        System.out.println(sb.toString());
-        orderAdminOptions();
+
     }
 
     private void showOrderList() {

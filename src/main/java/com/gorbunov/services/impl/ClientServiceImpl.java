@@ -35,7 +35,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getClient(long id) {
+    public Client getClient(long id) throws NullPointerException{
+        if(clientDao.getClient(id) == null) {
+            System.out.println("Client by id: " + id + " was not found!");
+        }
         return clientDao.getClient(id);
     }
 
