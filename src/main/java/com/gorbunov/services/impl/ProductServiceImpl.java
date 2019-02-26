@@ -53,12 +53,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addProductBasket(long id) {
-        productDao.addProductBasket(id);
+    public void addProductContainer(long id) {
+        productDao.addProductContainer(id);
     }
 
     @Override
-    public List<Product> showProductBasket() {
-        return productDao.showProductBasket();
+    public List<Product> showProductContainer() {
+        return productDao.showProductContainer();
+    }
+
+    @Override
+    public void clearProductContainer() {
+        productDao.clearProductContainer();
     }
 }

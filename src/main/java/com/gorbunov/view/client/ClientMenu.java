@@ -147,13 +147,13 @@ public class ClientMenu {
     private void addProductBasket() throws IOException, BusinessException {
         System.out.print("Enter product id: ");
         long id = Long.parseLong(br.readLine());
-        productService.addProductBasket(id);
+        productService.addProductContainer(id);
         shoppingBasket();
     }
 
     private void showPurchases() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
-        for(Product product : productService.showProductBasket()) {
+        for(Product product : productService.showProductContainer()) {
             sb.append("\nId: ").append(product.getId())
                     .append("; Product name: ").append(product.getName())
                     .append("; Description: ").append(product.getDescription())
@@ -164,7 +164,7 @@ public class ClientMenu {
     }
 
     private void showOrder() throws IOException, BusinessException {
-        Order order = orderService.showOrder(clientService.listClients().get(clientService.listClients().size() - 1), productService.showProductBasket());
+        Order order = orderService.reportBuildingOrder(clientService.listClients().get(clientService.listClients().size() - 1), productService.showProductContainer());
         StringBuilder sb = new StringBuilder();
         sb.append("\n---------------------------------------------------\n");
         sb.append("Client name: ").append(order.getClient().getName());

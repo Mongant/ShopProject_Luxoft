@@ -16,6 +16,10 @@ public interface ClientService {
 
     Client createClient(String name, String surname, String phone, int age, String email) throws BusinessException;
 
+    /**
+     * Get client information by id
+     * @param id customer unique identifier
+     * */
     Client getClient(long id);
 
     /**

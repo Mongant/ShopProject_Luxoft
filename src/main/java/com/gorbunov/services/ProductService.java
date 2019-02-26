@@ -14,23 +14,42 @@ public interface ProductService {
      * */
     Product createProduct(String name, String description, float price);
 
+    /**
+     * Get product information by id
+     * @param id product unique identifier
+     * */
     Product getProduct(long id);
 
     /**
-     * Method for modify data product by id
+     * Modify data product by id
      * @param id product unique identifier
      * */
     void modifyProduct(long id, String name, String description, float price);
 
     /**
-     * Method for modify data product by id
+     * Delete product by id
      * @param id product unique identifier
      * */
     void deleteProduct(long id);
 
+    /**
+     * Get information about products
+     * */
     List<Product> productList();
 
-    void addProductBasket(long id);
+    /**
+     * Group products into container
+     * @param id product unique identifier
+     * */
+    void addProductContainer(long id);
 
-    List<Product> showProductBasket();
+    /**
+     * Show information about products in product container
+     * */
+    List<Product> showProductContainer();
+
+    /**
+     * Сlear all information about products into product container
+     * */
+    void clearProductContainer();
 }

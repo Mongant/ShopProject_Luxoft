@@ -11,7 +11,7 @@ import java.util.Map;
 public class ProductDaoImpl implements ProductDao {
 
     private Map<Long, Product> products = new HashMap<>();
-    private List<Product> productBasket = new ArrayList<>();
+    private List<Product> productContainer = new ArrayList<>();
     private static long generatorProductId = 1;
     private static ProductDao productDao = new ProductDaoImpl();
 
@@ -23,6 +23,7 @@ public class ProductDaoImpl implements ProductDao {
             productDao = new ProductDaoImpl();
         }
         return productDao;
+
     }
 
     @Override
@@ -38,15 +39,9 @@ public class ProductDaoImpl implements ProductDao {
         return products.get(id);
     }
 
-
     @Override
-    public void addProductBasket(Product product) {
-        productBasket.add(product);
-    }
-
-    @Override
-    public List<Product> showProductBasket() {
-        return productBasket;
+    public List<Product> showProductContainer() {
+        return productContainer;
     }
 
     @Override
@@ -77,7 +72,12 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void addProductBasket(long id) {
-        productBasket.add(products.get(id));
+    public void addProductContainer(long id) {
+        productContainer.add(products.get(id));
+    }
+
+    @Override
+    public void clearProductContainer() {
+        productContainer.clear();
     }
 }

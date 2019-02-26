@@ -348,7 +348,7 @@ public class AdminMenu {
     private void addProductInOrder() throws IOException, BusinessException {
         System.out.print("Enter product id: ");
         long id = Long.parseLong(br.readLine());
-        productService.addProductBasket(id);
+        productService.addProductContainer(id);
         orderMenu();
     }
 
@@ -357,7 +357,7 @@ public class AdminMenu {
             StringBuilder sb = new StringBuilder();
             System.out.print("Input client id: ");
             long id = Long.parseLong(br.readLine());
-            Order order = orderService.showOrder(clientService.getClient(id), productService.showProductBasket());
+            Order order = orderService.reportBuildingOrder(clientService.getClient(id), productService.showProductContainer());
             orderService.createOrder(clientService.getClient(id), productService.productList());
             sb.append("\n---------------------------------------------------\n");
             sb.append("Client name: ").append(order.getClient().getName());
@@ -370,6 +370,7 @@ public class AdminMenu {
             sb.append("\nThank you for your purchase!");
             sb.append("\n---------------------------------------------------\n");
             System.out.println(sb.toString());
+            productService.clearProductContainer();
             orderAdminOptions();
         } catch (NullPointerException e) {
             orderMenu();
@@ -380,13 +381,8 @@ public class AdminMenu {
     }
 
     private void showOrderList() {
-        StringBuilder sb = new StringBuilder();
-        for(Order order : orderService.listOrders()) {
-            sb.append("\nOrder id: ").append(order.getId())
-                    .append(order.getClient())
-                    .append(order.getProducts());
-        }
-        System.out.println(sb.toString());
+        orderService.listOrders().toString();
+        System.out.println(orderService.listOrders().toString());
     }
 
     private void deleteOrder() throws IOException {

@@ -11,7 +11,7 @@ import java.util.Map;
 public class OrderDaoImpl implements OrderDao {
 
     private Map<Long, Order> orders = new HashMap<>();
-    private static long generatorId = 1;
+    private static long generatorId = 0;
     private static OrderDao orderDao = new OrderDaoImpl();
 
     private OrderDaoImpl() {

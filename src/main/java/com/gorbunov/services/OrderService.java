@@ -16,18 +16,20 @@ public interface OrderService {
     void createOrder(Client client, List<Product> products);
 
     /**
-     * Method for modify order by id
-     * @param id order unique identifier
-     * */
-    void modifyOrder(long id, Order order);
-
-    /**
      * Method for delete order by id
      * @param id order unique identifier
      * */
     void deleteOrder(long id);
 
-    Order showOrder(Client client, List<Product> products);
+    /**
+     * Сreates a report on order
+     * @param client information about client
+     * @param products information about products
+     * */
+    Order reportBuildingOrder(Client client, List<Product> products);
 
+    /**
+     * Get information about orders
+     * */
     List<Order> listOrders();
 }
