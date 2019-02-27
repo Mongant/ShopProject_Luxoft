@@ -2,7 +2,7 @@ package com.gorbunov.domain;
 
 public class Client {
 
-    private long id;
+    private long id = 0;
     private String name;
     private String surname;
     private String phone;

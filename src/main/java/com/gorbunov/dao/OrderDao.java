@@ -7,6 +7,7 @@ import java.util.List;
 public interface OrderDao {
     void addOrders(Order order);
     List<Order> listOrders();
-    boolean modifyOrder(long id);
+    boolean modifyOrder(long id, Order order);
     boolean deleteOrder(long id);
+    Order showOrder();
 }

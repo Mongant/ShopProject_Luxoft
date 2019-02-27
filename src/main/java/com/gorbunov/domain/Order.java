@@ -9,10 +9,9 @@ public class Order {
     private List<Product> products;
     private float amount;
 
-    public Order(Client client, List<Product> products, float amount) {
+    public Order(Client client, List<Product> products) {
         this.client = client;
         this.products = products;
-        this.amount = amount;
     }
 
     public long getId() {

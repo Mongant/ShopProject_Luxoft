@@ -1,20 +1,27 @@
 package com.gorbunov.view;
 
 import com.gorbunov.services.ClientService;
+import com.gorbunov.services.OrderService;
+import com.gorbunov.services.ProductService;
 import com.gorbunov.validator.BusinessException;
+import com.gorbunov.view.admin.AdminMenu;
+import com.gorbunov.view.client.ClientMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class MainMenu {
 
-    private final BufferedReader br;
+    private BufferedReader br;
     private ClientService clientService;
+    private ProductService productService;
+    private OrderService orderService;
 
-    public MainMenu(BufferedReader br, ClientService clientService) {
+    public MainMenu(BufferedReader br, ClientService clientService, ProductService productService, OrderService orderService) {
         this.br = br;
         this.clientService = clientService;
+        this.productService = productService;
+        this.orderService = orderService;
     }
 
     public void showMenu() throws IOException, BusinessException {
@@ -31,11 +38,11 @@ public class MainMenu {
             switch (input) {
                 case "1":
                     System.out.println("Admin menu");
-                    new AdminMenu(br, clientService).adminMenu();
+                    new AdminMenu(br, clientService, productService, orderService).adminMenu();
                     break;
                 case "2":
                     System.out.println("Client menu");
-                    new ClientMenu(br, clientService).clientMenu();
+                    new ClientMenu(br, clientService, productService, orderService).clientMenu();
                     break;
                 case "0":
                     System.out.println("Exit...");
@@ -43,6 +50,7 @@ public class MainMenu {
                     break;
                 default:
                     System.out.println("Wrong input");
+                    showMenu();
             }
         }
     }
