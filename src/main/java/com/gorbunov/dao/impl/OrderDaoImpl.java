@@ -22,7 +22,7 @@ public class OrderDaoImpl implements OrderDao {
             orderDao = new OrderDaoImpl();
         }
         return orderDao;
-     }
+    }
 
     @Override
     public void addOrders(Order order) {

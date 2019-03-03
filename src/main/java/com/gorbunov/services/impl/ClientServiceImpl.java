@@ -49,20 +49,12 @@ public class ClientServiceImpl implements ClientService {
         validationService.validateEmail(email);
         Client client = new Client(name, surname, phone, age, email);
         client.setId(id);
-        if(clientDao.modifyClient(id, client)) {
-            System.out.println("Client id: " + id + " was modify successfully!");
-        } else {
-            System.err.println("Client by id: " + id + " was not found!");
-        }
+        clientDao.updateClient(id, client);
     }
 
     @Override
     public void deleteClient(long id) {
-        if(clientDao.deleteClient(id)) {
-            System.out.println("Client by id: " + id + " was successfully deleted!");
-        } else {
-            System.err.println("Client by id: " + id + " was not found!");
-        }
+        clientDao.deleteClient(id);
     }
 
     @Override
