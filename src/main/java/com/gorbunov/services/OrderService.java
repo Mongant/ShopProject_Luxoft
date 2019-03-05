@@ -10,10 +10,10 @@ public interface OrderService {
 
     /**
      * Create new custom order for products
-     * @param client sets the client information
+     * @param clientId client unique identifier
      * @param products sets the producs list
      * */
-    void createOrder(Client client, List<Product> products);
+    void addOrder(long clientId, String refId, List<Product> products);
 
     /**
      * Method for delete order by id
@@ -21,12 +21,7 @@ public interface OrderService {
      * */
     void deleteOrder(long id);
 
-    /**
-     * Сreates a report on order
-     * @param client information about client
-     * @param products information about products
-     * */
-    Order reportBuildingOrder(Client client, List<Product> products);
+    Order showOrder(String refId);
 
     /**
      * Get information about orders

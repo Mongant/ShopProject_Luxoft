@@ -2,7 +2,6 @@ package com.gorbunov.services.impl;
 
 import com.gorbunov.dao.OrderDao;
 import com.gorbunov.dao.impl.OrderDaoImpl;
-import com.gorbunov.domain.Client;
 import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.OrderService;
@@ -14,9 +13,12 @@ public class OrderServiceImpl implements OrderService {
     OrderDao orderDao = OrderDaoImpl.getInstance();
 
     @Override
-    public void createOrder(Client client, List<Product> products) {
-        Order order = new Order(client, products);
-        orderDao.addOrders(order);
+    public void addOrder(long clientId, String refId, List<Product> products) {
+        float amount = 0;
+        for(Product product : products) {
+            amount = product.getPrice() + amount;
+        }
+        orderDao.addOrder(clientId, refId, amount);
     }
 
     @Override
@@ -29,16 +31,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order reportBuildingOrder(Client client, List<Product> products) {
-        float amount = 0;
-        Order order = new Order(client, products);
-        for(Product product : products) {
-            amount = product.getPrice() + amount;
-        }
-        order.setAmount(amount);
-        orderDao.addOrders(order);
-        orderDao.addOrders(order);
-        return orderDao.showOrder();
+    public Order showOrder(String refId) {
+        return orderDao.showOrder(refId);
     }
 
     @Override

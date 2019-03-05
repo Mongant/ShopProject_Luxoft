@@ -24,23 +24,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void modifyProduct(long id, String name, String description, float price) {
+    public void updateProduct(long id, String name, String description, float price) {
         Product product = new Product(name, description, price);
-        product.setId(id);
-        if(productDao.modifyProduct(id, product)) {
-            System.out.println("Client id: " + id + " was modify successfully!");
-        } else {
-            System.err.println("Client by id: " + id + " was not found!");
-        }
+        productDao.updateProduct(id, product);
     }
 
     @Override
     public void deleteProduct(long id) {
-        if(productDao.deleteProduct(id)) {
-            System.out.println("Product by id: " + id + " was removed!");
-        } else {
-            System.err.println("Product by id: " + id + " was not found!");
-        }
+        productDao.deleteProduct(id);
     }
 
     @Override
@@ -53,17 +44,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addProductContainer(long id) {
-        productDao.addProductContainer(id);
-    }
-
-    @Override
-    public List<Product> showProductContainer() {
-        return productDao.showProductContainer();
-    }
-
-    @Override
-    public void clearProductContainer() {
-        productDao.clearProductContainer();
+    public List<Product> showProductContainer(String refId) {
+        return productDao.showProductContainer(refId);
     }
 }

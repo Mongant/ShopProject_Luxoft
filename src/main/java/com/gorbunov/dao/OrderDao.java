@@ -5,9 +5,9 @@ import com.gorbunov.domain.Order;
 import java.util.List;
 
 public interface OrderDao {
-    void addOrders(Order order);
+    void addOrder(long id, String refId, float amount);
     List<Order> listOrders();
     boolean modifyOrder(long id, Order order);
     boolean deleteOrder(long id);
-    Order showOrder();
+    Order showOrder(String refId);
 }

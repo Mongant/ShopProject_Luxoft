@@ -9,7 +9,8 @@ public class Client {
     private String email;
     private int age;
 
-    public Client(String name, String surname, String phone,  int age, String email) {
+    public Client(long id, String name, String surname, int age, String phone, String email) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.phone = phone;
@@ -17,10 +18,12 @@ public class Client {
         this.age = age;
     }
 
-    public Client(String name, String surname, String phone) {
+    public Client(String name, String surname, String phone,  int age, String email) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
+        this.email = email;
+        this.age = age;
     }
 
     public long getId() {

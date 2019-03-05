@@ -24,7 +24,7 @@ public interface ProductService {
      * Modify data product by id
      * @param id product unique identifier
      * */
-    void modifyProduct(long id, String name, String description, float price);
+    void updateProduct(long id, String name, String description, float price);
 
     /**
      * Delete product by id
@@ -37,19 +37,5 @@ public interface ProductService {
      * */
     List<Product> productList();
 
-    /**
-     * Group products into container
-     * @param id product unique identifier
-     * */
-    void addProductContainer(long id);
-
-    /**
-     * Show information about products in product container
-     * */
-    List<Product> showProductContainer();
-
-    /**
-     * Сlear all information about products into product container
-     * */
-    void clearProductContainer();
+    List<Product> showProductContainer(String ref);
 }

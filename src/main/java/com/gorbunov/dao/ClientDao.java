@@ -17,29 +17,9 @@ public interface ClientDao {
      * @param id customer unique identifier
      * */
     Client getClient(long id);
-
-    /**
-     * Get information about clients in database
-     * */
-    List<Client>clientList();
-
-    /**
-     * Modify data client by id in database
-     * @param id customer unique identifier
-     * @param client information about client
-     * */
-    boolean modifyClient(long id, Client client);
-
-    /**
-     * Delete data client by id in database
-     * @param id customer unique identifier
-     * */
-    boolean deleteClient(long id);
-
-    /**
-     * Checks the number for repetitions in database
-     * @param phone client phone number
-     * */
+    List<Client> clientList();
+    void updateClient(long id, Client client);
+    void deleteClient(long id);
     boolean duplicatePhone(String phone);
 
 }
