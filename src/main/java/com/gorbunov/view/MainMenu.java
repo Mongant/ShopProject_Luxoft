@@ -2,6 +2,7 @@ package com.gorbunov.view;
 
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
+import com.gorbunov.services.ProductContainerService;
 import com.gorbunov.services.ProductService;
 import com.gorbunov.validator.BusinessException;
 import com.gorbunov.view.admin.AdminMenu;
@@ -15,12 +16,14 @@ public class MainMenu {
     private BufferedReader br;
     private ClientService clientService;
     private ProductService productService;
+    private ProductContainerService productContainerService;
     private OrderService orderService;
 
-    public MainMenu(BufferedReader br, ClientService clientService, ProductService productService, OrderService orderService) {
+    public MainMenu(BufferedReader br, ClientService clientService, ProductService productService, ProductContainerService productContainerService, OrderService orderService) {
         this.br = br;
         this.clientService = clientService;
         this.productService = productService;
+        this.productContainerService = productContainerService;
         this.orderService = orderService;
     }
 
@@ -38,11 +41,11 @@ public class MainMenu {
             switch (input) {
                 case "1":
                     System.out.println("Admin menu");
-                    new AdminMenu(br, clientService, productService, orderService).adminMenu();
+                    new AdminMenu(br, clientService, productService, productContainerService, orderService).adminMenu();
                     break;
                 case "2":
                     System.out.println("Client menu");
-                    new ClientMenu(br, clientService, productService, orderService).clientMenu();
+                    new ClientMenu(br, clientService, productService, productContainerService, orderService).clientMenu();
                     break;
                 case "0":
                     System.out.println("Exit...");

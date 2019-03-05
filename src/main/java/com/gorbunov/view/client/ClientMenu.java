@@ -4,7 +4,9 @@ import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
+import com.gorbunov.services.ProductContainerService;
 import com.gorbunov.services.ProductService;
+import com.gorbunov.utils.GenerateId;
 import com.gorbunov.validator.BusinessException;
 import com.gorbunov.view.MainMenu;
 
@@ -13,16 +15,20 @@ import java.io.IOException;
 
 public class ClientMenu {
 
+    private String refId;
     private BufferedReader br;
     private ClientService clientService;
     private ProductService productService;
+    private ProductContainerService productContainerService;
     private OrderService orderService;
 
-    public ClientMenu(BufferedReader br, ClientService clientService, ProductService productService, OrderService orderService) {
+    public ClientMenu(BufferedReader br, ClientService clientService, ProductService productService, ProductContainerService productContainerService, OrderService orderService) {
         this.br = br;
         this.clientService = clientService;
         this.productService = productService;
+        this.productContainerService = productContainerService;
         this.orderService = orderService;
+        this.refId = GenerateId.generateId();
     }
 
     public void clientMenu() throws IOException, BusinessException {
@@ -43,7 +49,7 @@ public class ClientMenu {
                     break;
                 case "0":
                     System.out.println("Main menu");
-                    new MainMenu(br, clientService, productService, orderService).showMenu();
+                    new MainMenu(br, clientService, productService, productContainerService, orderService).showMenu();
                     break;
                 default:
                     System.err.println("Wrong input, try again!");
@@ -55,9 +61,6 @@ public class ClientMenu {
     private void clientOptions() {
         System.out.println("\n1. Create client");
         System.out.println("2. Shopping");
-        System.out.println("3. Order");
-        System.out.println("4. Modify information" );
-        System.out.println("5. Delete client");
         System.out.println("0. Return in main menu");
     }
 
@@ -147,13 +150,17 @@ public class ClientMenu {
     private void addProductBasket() throws IOException, BusinessException {
         System.out.print("Enter product id: ");
         long id = Long.parseLong(br.readLine());
-        productService.addProductBasket(id);
+        if(productService.getProduct(id) != null) {
+            productContainerService.addProductContainer(id, refId);
+        } else {
+            System.err.println("Product ID: " + id + " does not exist");
+        }
         shoppingBasket();
     }
 
     private void showPurchases() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
-        for(Product product : productService.showProductBasket()) {
+        for(Product product : productService.showProductContainer(refId)) {
             sb.append("\nId: ").append(product.getId())
                     .append("; Product name: ").append(product.getName())
                     .append("; Description: ").append(product.getDescription())
@@ -164,7 +171,8 @@ public class ClientMenu {
     }
 
     private void showOrder() throws IOException, BusinessException {
-        Order order = orderService.showOrder(clientService.listClients().get(clientService.listClients().size() - 1), productService.showProductBasket());
+        orderService.addOrder(clientService.listClients().get(clientService.listClients().size() -1).getId(), refId, productService.showProductContainer(refId));
+        Order order = orderService.showOrder(refId);
         StringBuilder sb = new StringBuilder();
         sb.append("\n---------------------------------------------------\n");
         sb.append("Client name: ").append(order.getClient().getName());

@@ -7,9 +7,7 @@ import com.gorbunov.domain.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ProductDaoImpl implements ProductDao {
 
@@ -17,13 +15,10 @@ public class ProductDaoImpl implements ProductDao {
     private String productName;
     private String description;
     private float price;
+    private static ProductDao productDao;
 
     DataBaseConnection dbConnection = new DataBaseConnection();
 
-    private Map<Long, Product> products = new HashMap<>();
-    private List<Product> productBasket = new ArrayList<>();
-    private static long generatorProductId = 1;
-    private static ProductDao productDao = new ProductDaoImpl();
 
     private ProductDaoImpl() {
     }
@@ -40,14 +35,13 @@ public class ProductDaoImpl implements ProductDao {
         String sql = "insert into SHOP.PRODUCT(PRODUCT_NAME, DESCRIPTION, PRICE) " +
                 "values ('" + product.getName() + "', '" + product.getDescription() + "', " + product.getPrice() + ");";
         dbConnection.sqlStatement(sql);
-        dbConnection.closeDataBaseConnection();
     }
 
     @Override
     public List<Product> productList() {
         List<Product> products = new ArrayList<>();
+        String sql = "select * from SHOP.PRODUCT;";
         try {
-            String sql = "select * from SHOP.PRODUCT;";
             ResultSet resultSet = dbConnection.getResultSet(sql);
             while(resultSet.next()) {
                 productId = resultSet.getLong(1);
@@ -65,44 +59,60 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Product getProduct(long id) {
-        return products.get(id);
-    }
-
-
-    @Override
-    public void addProductBasket(Product product) {
-        productBasket.add(product);
-    }
-
-    @Override
-    public List<Product> showProductBasket() {
-        return productBasket;
-    }
-
-    @Override
-    public boolean modifyProduct(long id, Product product) {
-        Product value = products.get(id);
-        if(value != null) {
-            products.put(id, product);
-            return true;
-        } else {
-            return false;
+        Product product = null;
+        try {
+            String sql = "select ID, PRODUCT_NAME, DESCRIPTION, PRICE\n" +
+                    "from SHOP.PRODUCT\n" +
+                    "where ID = " + id + ";";
+            ResultSet resultSet = dbConnection.getResultSet(sql);
+            if(resultSet.isBeforeFirst()) {
+                while (resultSet.next()) {
+                    productId = resultSet.getInt(1);
+                    productName = resultSet.getString(2);
+                    description = resultSet.getString(3);
+                    price = resultSet.getFloat(4);
+                    product = new Product(productId, productName, description, price);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return product;
     }
 
     @Override
-    public boolean deleteProduct(long id) {
-        Product value = products.get(id);
-        if(value != null) {
-            products.remove(id);
-            return true;
-        } else {
-            return false;
+    public List<Product> showProductContainer(String ref) {
+        List<Product> products = new ArrayList<>();
+        String sql = "select t2.PRODUCT_ID, t1.PRODUCT_NAME, t1.DESCRIPTION, t1.PRICE\n" +
+                    "from SHOP.PRODUCT as t1\n" +
+                    "join SHOP.PRODUCT_CONTAINER as t2 on t1.ID = t2.PRODUCT_ID\n" +
+                    "where t2.REF_ID = '" + ref + "'";
+        try {
+            ResultSet resultSet = dbConnection.getResultSet(sql);
+            while (resultSet.next()) {
+                productId = resultSet.getInt(1);
+                productName = resultSet.getString(2);
+                description = resultSet.getString(3);
+                price = resultSet.getFloat(4);
+                products.add(new Product(productId, productName, description, price));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return products;
     }
 
     @Override
-    public void addProductBasket(long id) {
-        productBasket.add(products.get(id));
+    public void updateProduct(long id, Product product) {
+        String sql = "update SHOP.PRODUCT" +
+                "\nset PRODUCT_NAME = '" + product.getName() + "', DESCRIPTION = '" + product.getDescription() + "', PRICE = " + product.getPrice() +
+                " \nwhere ID = " + id + ";";
+        dbConnection.sqlUpdate(sql);
+    }
+
+    @Override
+    public void deleteProduct(long id) {
+        String sql = "delete from SHOP.PRODUCT where ID = " + id + ";";
+        dbConnection.sqlStatement(sql);
     }
 }

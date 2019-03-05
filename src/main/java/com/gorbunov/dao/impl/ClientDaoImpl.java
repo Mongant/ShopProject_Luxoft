@@ -39,7 +39,6 @@ public class ClientDaoImpl implements ClientDao {
             String sql = "insert into SHOP.CLIENT(NAME, SURNAME, AGE, PHONE_NUM, EMAIL) " +
                         "values ('" + client.getName() + "', '" + client.getSurname() + "', " + client.getAge() + ", '" + client.getPhone() + "', '" + client.getEmail() + "');" ;
             dbConnection.sqlStatement(sql);
-            dbConnection.closeDataBaseConnection();
     }
 
     @Override
@@ -62,7 +61,6 @@ public class ClientDaoImpl implements ClientDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        dbConnection.closeDataBaseConnection();
         return client;
     }
 
@@ -83,7 +81,6 @@ public class ClientDaoImpl implements ClientDao {
                 Client client = new Client(clientId, clientName, clientSurname, clientAge, clientPhone, clientEmail);
                 clientsList.add(client);
             }
-//            dbConnection.closeDataBaseConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
