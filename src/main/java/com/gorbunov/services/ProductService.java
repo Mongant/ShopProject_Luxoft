@@ -14,20 +14,27 @@ public interface ProductService {
      * */
     Product createProduct(String name, String description, float price);
 
+    /**
+     * Get product information by id
+     * @param id product unique identifier
+     * */
     Product getProduct(long id);
 
     /**
-     * Method for modify data product by id
+     * Modify data product by id
      * @param id product unique identifier
      * */
     void updateProduct(long id, String name, String description, float price);
 
     /**
-     * Method for modify data product by id
+     * Delete product by id
      * @param id product unique identifier
      * */
     void deleteProduct(long id);
 
+    /**
+     * Get information about products
+     * */
     List<Product> productList();
 
     List<Product> showProductContainer(String ref);

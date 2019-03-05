@@ -21,14 +21,6 @@ public class OrderServiceImpl implements OrderService {
         orderDao.addOrder(clientId, refId, amount);
     }
 
-    public void modifyOrder(long id, Order order) {
-        if(orderDao.modifyOrder(id, order)) {
-            System.out.println("Add some changes in Order");
-        } else {
-            System.out.println("Something was wrong with modify order by id: " + id);
-        }
-    }
-
     @Override
     public void deleteOrder(long id) {
         if(orderDao.deleteOrder(id)) {

@@ -16,12 +16,6 @@ public interface OrderService {
     void addOrder(long clientId, String refId, List<Product> products);
 
     /**
-     * Method for modify order by id
-     * @param id order unique identifier
-     * */
-    void modifyOrder(long id, Order order);
-
-    /**
      * Method for delete order by id
      * @param id order unique identifier
      * */
@@ -29,5 +23,8 @@ public interface OrderService {
 
     Order showOrder(String refId);
 
+    /**
+     * Get information about orders
+     * */
     List<Order> listOrders();
 }

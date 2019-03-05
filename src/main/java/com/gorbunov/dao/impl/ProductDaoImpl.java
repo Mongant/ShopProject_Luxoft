@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
-
+  
     private long productId;
     private String productName;
     private String description;
@@ -18,7 +18,6 @@ public class ProductDaoImpl implements ProductDao {
     private static ProductDao productDao;
 
     DataBaseConnection dbConnection = new DataBaseConnection();
-
 
     private ProductDaoImpl() {
     }
@@ -28,6 +27,7 @@ public class ProductDaoImpl implements ProductDao {
             productDao = new ProductDaoImpl();
         }
         return productDao;
+
     }
 
     @Override

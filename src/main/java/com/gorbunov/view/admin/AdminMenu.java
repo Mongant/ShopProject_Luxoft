@@ -369,6 +369,7 @@ public class AdminMenu {
         } else {
             System.err.println("Product ID: " + id + " does not exist");
         }
+
         orderMenu();
     }
 
@@ -405,7 +406,6 @@ public class AdminMenu {
             } else {
                 System.err.println("Client ID: " + id + " does not exist");
             }
-
         } catch (NullPointerException e) {
             System.out.println("Something was wrong!");
             orderMenu();
@@ -416,13 +416,8 @@ public class AdminMenu {
     }
 
     private void showOrderList() {
-        StringBuilder sb = new StringBuilder();
-        for(Order order : orderService.listOrders()) {
-            sb.append("\nOrder id: ").append(order.getId())
-                    .append(order.getClient())
-                    .append(order.getProducts());
-        }
-        System.out.println(sb.toString());
+        orderService.listOrders().toString();
+        System.out.println(orderService.listOrders().toString());
     }
 
     private void deleteOrder() throws IOException {
