@@ -8,4 +8,4 @@
 #ignor out folder
 out
 #ignor resources folder
-src/main/resources/
+#src/main/resources/

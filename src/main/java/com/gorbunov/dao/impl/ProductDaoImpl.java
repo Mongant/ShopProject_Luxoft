@@ -1,14 +1,24 @@
 package com.gorbunov.dao.impl;
 
 import com.gorbunov.dao.ProductDao;
+import com.gorbunov.dao.dbcp.DataBaseConnection;
 import com.gorbunov.domain.Product;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ProductDaoImpl implements ProductDao {
+
+    private long productId;
+    private String productName;
+    private String description;
+    private float price;
+
+    DataBaseConnection dbConnection = new DataBaseConnection();
 
     private Map<Long, Product> products = new HashMap<>();
     private List<Product> productBasket = new ArrayList<>();
@@ -27,10 +37,30 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void addProduct(Product product) {
-        if(product.getId() == 0) {
-            product.setId(generatorProductId++);
+        String sql = "insert into SHOP.PRODUCT(PRODUCT_NAME, DESCRIPTION, PRICE) " +
+                "values ('" + product.getName() + "', '" + product.getDescription() + "', " + product.getPrice() + ");";
+        dbConnection.sqlStatement(sql);
+        dbConnection.closeDataBaseConnection();
+    }
+
+    @Override
+    public List<Product> productList() {
+        List<Product> products = new ArrayList<>();
+        try {
+            String sql = "select * from SHOP.PRODUCT;";
+            ResultSet resultSet = dbConnection.getResultSet(sql);
+            while(resultSet.next()) {
+                productId = resultSet.getLong(1);
+                productName = resultSet.getString(2);
+                description = resultSet.getString(3);
+                price = resultSet.getFloat(4);
+                Product product = new Product(productId, productName, description, price);
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        products.put(product.getId(), product);
+        return products;
     }
 
     @Override
@@ -47,11 +77,6 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public List<Product> showProductBasket() {
         return productBasket;
-    }
-
-    @Override
-    public List<Product> productList() {
-        return new ArrayList<>(products.values());
     }
 
     @Override

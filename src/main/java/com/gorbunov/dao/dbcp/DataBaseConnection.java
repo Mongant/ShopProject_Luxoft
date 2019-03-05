@@ -32,6 +32,9 @@ public class DataBaseConnection {
 
     private Statement getStatement() {
         try {
+            if(connection == null) {
+                getConnection();
+            }
             if(statement == null) {
                 statement = getConnection().createStatement();
             }

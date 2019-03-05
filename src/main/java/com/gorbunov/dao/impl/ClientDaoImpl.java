@@ -62,13 +62,13 @@ public class ClientDaoImpl implements ClientDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        dbConnection.closeDataBaseConnection();
         return client;
     }
 
     @Override
     public List<Client> clientList() {
         List<Client> clientsList = new ArrayList<>();
-
         try {
             String sql = "select * from SHOP.CLIENT";
             ResultSet resultSet = dbConnection.getResultSet(sql);

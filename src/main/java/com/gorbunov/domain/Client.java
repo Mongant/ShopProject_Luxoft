@@ -9,7 +9,6 @@ public class Client {
     private String email;
     private int age;
 
-
     public Client(long id, String name, String surname, int age, String phone, String email) {
         this.id = id;
         this.name = name;
