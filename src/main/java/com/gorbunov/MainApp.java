@@ -1,6 +1,7 @@
 
 package com.gorbunov;
 
+import com.gorbunov.dao.dbcp.CreatorDataBase;
 import com.gorbunov.dao.impl.ClientDaoImpl;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
@@ -21,6 +22,7 @@ import java.io.InputStreamReader;
 
 public class MainApp {
     public static void main(String[] args) throws IOException, BusinessException {
+        new CreatorDataBase().createDataBaseStructure();
         ValidationService validationService = new ValidationServiceImpl();
         ClientService clientService = new ClientServiceImpl(ClientDaoImpl.getInstance(), validationService);
         ProductService productService = new ProductServiceImpl();
