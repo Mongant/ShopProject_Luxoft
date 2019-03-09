@@ -23,11 +23,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(long id) {
-        if(orderDao.deleteOrder(id)) {
-            System.out.println("Order on id: " + id + " was removed!");
-        } else {
-            System.out.println("Something was wrong with delete order by id: " + id);
-        }
+        orderDao.deleteOrder(id);
     }
 
     @Override
@@ -37,11 +33,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> listOrders() {
-        if(!orderDao.listOrders().isEmpty()) {
-            return orderDao.listOrders();
+        if(!orderDao.showAllOrders().isEmpty()) {
+            return orderDao.showAllOrders();
         } else {
-            System.out.println("Order list is empty!");
-            return orderDao.listOrders();
+            System.err.println("Order list is empty!");
+            return orderDao.showAllOrders();
         }
     }
 }

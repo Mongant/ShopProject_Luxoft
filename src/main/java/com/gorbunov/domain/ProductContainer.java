@@ -1,41 +1,15 @@
 package com.gorbunov.domain;
 
-import java.util.List;
+import java.util.Map;
 
 public class ProductContainer {
 
-    private long id;
-    private long clientId;
     private String refId;
-    private List<Product> products;
+    private Map<Long, Product> productsContainer;
 
-    public ProductContainer(long id, long clientId, String refId, List<Product> products) {
-        this.id = id;
-        this.clientId = clientId;
+    public ProductContainer(String refId, Map<Long, Product> productsContainer) {
         this.refId = refId;
-        this.products = products;
-    }
-
-    public ProductContainer(long clientId, String refId, List<Product> products) {
-        this.clientId = clientId;
-        this.refId = refId;
-        this.products = products;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(long clientId) {
-        this.clientId = clientId;
+        this.productsContainer = productsContainer;
     }
 
     public String getRefId() {
@@ -46,21 +20,11 @@ public class ProductContainer {
         this.refId = refId;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Map<Long, Product> getProductsContainer() {
+        return productsContainer;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductContainer{" +
-                "id=" + id +
-                ", clientId=" + clientId +
-                ", refId='" + refId + '\'' +
-                ", products=" + products +
-                '}';
+    public void setProductsContainer(Map<Long, Product> productsContainer) {
+        this.productsContainer = productsContainer;
     }
 }

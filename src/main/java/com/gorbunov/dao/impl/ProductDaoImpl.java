@@ -3,18 +3,14 @@ package com.gorbunov.dao.impl;
 import com.gorbunov.dao.ProductDao;
 import com.gorbunov.dao.dbcp.DataBaseConnection;
 import com.gorbunov.domain.Product;
+import com.gorbunov.utils.ReaderIniFile;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
-  
-    private long productId;
-    private String productName;
-    private String description;
-    private float price;
+
     private static ProductDao productDao;
 
     DataBaseConnection dbConnection = new DataBaseConnection();
@@ -32,17 +28,32 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void addProduct(Product product) {
-        String sql = "insert into SHOP.PRODUCT(PRODUCT_NAME, DESCRIPTION, PRICE) " +
-                "values ('" + product.getName() + "', '" + product.getDescription() + "', " + product.getPrice() + ");";
-        dbConnection.sqlStatement(sql);
+        String sql = ReaderIniFile.iniReader("Product operation", "ADD_NEW_PRODUCT");
+
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setFloat(3, product.getPrice());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<Product> productList() {
+        long productId;
+        String productName;
+        String description;
+        float price;
+
         List<Product> products = new ArrayList<>();
-        String sql = "select * from SHOP.PRODUCT;";
-        try {
-            ResultSet resultSet = dbConnection.getResultSet(sql);
+        String sql = ReaderIniFile.iniReader("Product operation", "PRODUCT_LIST");
+
+        try(Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 productId = resultSet.getLong(1);
                 productName = resultSet.getString(2);
@@ -51,7 +62,7 @@ public class ProductDaoImpl implements ProductDao {
                 Product product = new Product(productId, productName, description, price);
                 products.add(product);
             }
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
         }
         return products;
@@ -59,12 +70,18 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Product getProduct(long id) {
+        long productId;
+        String productName;
+        String description;
+        float price;
+
         Product product = null;
-        try {
-            String sql = "select ID, PRODUCT_NAME, DESCRIPTION, PRICE\n" +
-                    "from SHOP.PRODUCT\n" +
-                    "where ID = " + id + ";";
-            ResultSet resultSet = dbConnection.getResultSet(sql);
+        String sql = ReaderIniFile.iniReader("Product operation", "GET_PRODUCT");
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.isBeforeFirst()) {
                 while (resultSet.next()) {
                     productId = resultSet.getInt(1);
@@ -81,38 +98,31 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> showProductContainer(String ref) {
-        List<Product> products = new ArrayList<>();
-        String sql = "select t2.PRODUCT_ID, t1.PRODUCT_NAME, t1.DESCRIPTION, t1.PRICE\n" +
-                    "from SHOP.PRODUCT as t1\n" +
-                    "join SHOP.PRODUCT_CONTAINER as t2 on t1.ID = t2.PRODUCT_ID\n" +
-                    "where t2.REF_ID = '" + ref + "'";
-        try {
-            ResultSet resultSet = dbConnection.getResultSet(sql);
-            while (resultSet.next()) {
-                productId = resultSet.getInt(1);
-                productName = resultSet.getString(2);
-                description = resultSet.getString(3);
-                price = resultSet.getFloat(4);
-                products.add(new Product(productId, productName, description, price));
-            }
-        } catch (SQLException e) {
+    public void updateProduct(long id, Product product) {
+        String sql = ReaderIniFile.iniReader("Product operation","UPDATE_PRODUCT");
+
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setFloat(3, product.getPrice());
+            preparedStatement.setLong(4, id);
+            preparedStatement.executeUpdate();
+        } catch(SQLException e) {
             e.printStackTrace();
         }
-        return products;
-    }
-
-    @Override
-    public void updateProduct(long id, Product product) {
-        String sql = "update SHOP.PRODUCT" +
-                "\nset PRODUCT_NAME = '" + product.getName() + "', DESCRIPTION = '" + product.getDescription() + "', PRICE = " + product.getPrice() +
-                " \nwhere ID = " + id + ";";
-        dbConnection.sqlUpdate(sql);
     }
 
     @Override
     public void deleteProduct(long id) {
-        String sql = "delete from SHOP.PRODUCT where ID = " + id + ";";
-        dbConnection.sqlStatement(sql);
+        String sql = ReaderIniFile.iniReader("Product operation","DELETE_PRODUCT");
+
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

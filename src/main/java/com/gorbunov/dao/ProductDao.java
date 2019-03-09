@@ -18,7 +18,6 @@ public interface ProductDao {
      * */
     Product getProduct(long id);
     List<Product> productList();
-    List<Product> showProductContainer(String ref);
     void updateProduct(long id, Product product);
     void deleteProduct(long id);
 }

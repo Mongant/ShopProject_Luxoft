@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProduct(long id) {
+    public Product getProduct(long id) throws NullPointerException {
         return productDao.getProduct(id);
     }
 
@@ -39,12 +39,7 @@ public class ProductServiceImpl implements ProductService {
         if(!productDao.productList().isEmpty()){
             return productDao.productList();
         }
-        System.out.println("Product list is empty!");
+        System.err.println("Product list is empty!");
         return productDao.productList();
-    }
-
-    @Override
-    public List<Product> showProductContainer(String refId) {
-        return productDao.showProductContainer(refId);
     }
 }

@@ -3,6 +3,7 @@ package com.gorbunov.view.admin;
 import com.gorbunov.domain.Client;
 import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
+import com.gorbunov.domain.ProductContainer;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductContainerService;
@@ -13,6 +14,8 @@ import com.gorbunov.view.MainMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 public class AdminMenu {
 
@@ -116,7 +119,7 @@ public class AdminMenu {
         System.out.println("\n1. Add product");
         System.out.println("2. Modify product");
         System.out.println("3. Delete product");
-        System.out.println("4. Product list");
+        System.out.println("4. Show all products");
         System.out.println("0. Return in admin menu");
 
         while (isRunning) {
@@ -138,7 +141,7 @@ public class AdminMenu {
                     productAdminOptions();
                     break;
                 case "4":
-                    System.out.println("Product list");
+                    System.out.println("Show all products");
                     showProductList();
                     break;
                 case "0":
@@ -217,6 +220,7 @@ public class AdminMenu {
         System.out.print("Enter client id: ");
         long id = Long.parseLong(br.readLine());
         try {
+        if(clientService.getClient(id) != null) {
             System.out.print("\nInput name: ");
             String name = br.readLine();
             System.out.print("Input surname: ");
@@ -229,7 +233,9 @@ public class AdminMenu {
             String email = br.readLine();
             clientService.modifyClient(id, name, surname, phone, age, email);
             System.out.println("Client was created successfully!");
-            clientAdminOptions();
+        } else {
+            System.err.println("Client ID: " + id + " does not exist");
+        }
         } catch (BusinessException e) {
             System.err.println(e.getMessage());
             createClient();
@@ -244,18 +250,22 @@ public class AdminMenu {
     private void deleteClient() throws IOException {
         System.out.print("Enter client id: ");
         long id = Long.parseLong(br.readLine());
-        clientService.deleteClient(id);
+        if(clientService.getClient(id) != null) {
+            clientService.deleteClient(id);
+        } else {
+            System.err.println("\"Client ID: " + id + " does not exist\"");
+        }
     }
 
     private void showClientsList() throws IOException, BusinessException {
         StringBuilder sb = new StringBuilder();
-        for(Client client:clientService.listClients()) {
+        for (Client client : clientService.listClients()) {
             sb.append("\nId: ").append(client.getId()).
-            append(". Name: ").append(client.getName()).
-            append("; Surname: ").append(client.getSurname()).
-            append("; Phone: ").append(client.getPhone()).
-            append("; Age: ").append(client.getAge()).
-            append("; Email: ").append(client.getEmail());
+                    append(". Name: ").append(client.getName()).
+                    append("; Surname: ").append(client.getSurname()).
+                    append("; Phone: ").append(client.getPhone()).
+                    append("; Age: ").append(client.getAge()).
+                    append("; Email: ").append(client.getEmail());
         }
         System.out.println(sb.toString());
         clientAdminOptions();
@@ -323,7 +333,7 @@ public class AdminMenu {
         boolean isRunning = true;
 
         System.out.println("\n1. Add products in order");
-        System.out.println("2. Create order");
+        System.out.println("2. Add client in order (make an order)");
         System.out.println("3. Show product basket");
         System.out.println("0. Return in admin menu");
 
@@ -334,22 +344,24 @@ public class AdminMenu {
                 case "1":
                     System.out.println("Add products in order");
                     addProductContainer();
+                    orderMenu();
                     break;
                 case "2":
                     System.out.println("Create order");
                     createOrder();
-                    orderAdminOptions();
+                    orderMenu();
                     break;
                 case "3":
+                    System.out.println("Show product basket");
                     showProductContainer();
-                    orderAdminOptions();
+                    orderMenu();
                     break;
                 case "0":
                     adminMenu();
                     break;
                 default:
                     System.err.println("Wrong input, try again!");
-                    orderAdminOptions();
+                    orderMenu();
             }
         }
 
@@ -361,7 +373,7 @@ public class AdminMenu {
         orderAdminOptions();
     }
 
-    private void addProductContainer() throws IOException, BusinessException {
+    private void addProductContainer() throws IOException{
         System.out.print("Enter product id: ");
         long id = Long.parseLong(br.readLine());
         if (productService.getProduct(id) != null) {
@@ -369,17 +381,18 @@ public class AdminMenu {
         } else {
             System.err.println("Product ID: " + id + " does not exist");
         }
-
-        orderMenu();
     }
 
     private void showProductContainer() {
         StringBuilder sb = new StringBuilder();
-        for(Product product : productService.showProductContainer(refId)) {
-            sb.append("\nId: ").append(product.getId())
-                    .append("; Product name: ").append(product.getName())
-                    .append("; Description: ").append(product.getDescription())
-                    .append("; Price: ").append(product.getPrice());
+        ProductContainer productContainer = productContainerService.showProductContainer(refId);
+        Iterator it = productContainer.getProductsContainer().entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            sb.append("\nId: ").append(pair.getKey()).append(pair.getValue());
+//                    .append("; Product name: ").append(product.getName())
+//                    .append("; Description: ").append(product.getDescription())
+//                    .append("; Price: ").append(product.getPrice());
         }
         System.out.println(sb.toString());
     }
@@ -403,6 +416,7 @@ public class AdminMenu {
                 sb.append("\nThank you for your purchase!");
                 sb.append("\n---------------------------------------------------\n");
                 System.out.println(sb.toString());
+                refId = GenerateId.generateId();
             } else {
                 System.err.println("Client ID: " + id + " does not exist");
             }
@@ -416,8 +430,24 @@ public class AdminMenu {
     }
 
     private void showOrderList() {
-        orderService.listOrders().toString();
-        System.out.println(orderService.listOrders().toString());
+        StringBuilder sb = new StringBuilder();
+        for(Order order : orderService.listOrders()) {
+            sb.append("\n---------------------------------------------------\n")
+                    .append("Order ID: ").append(order.getId())
+                    .append("\nClient information:")
+                    .append("\nClient name: ").append(order.getClient().getName())
+                    .append("; Client surname: ").append(order.getClient().getSurname())
+                    .append("\nProducts list: ");
+            for(Product product : order.getProducts()) {
+                sb.append("\nProduct name: ").append(product.getName())
+                        .append("; Product description: ").append(product.getDescription())
+                        .append("; Price: ").append(product.getPrice());
+            }
+            sb.append("\nAmount: ").append(order.getAmount())
+                    .append("\n---------------------------------------------------");
+            System.out.println(sb.toString());
+            sb.setLength(0);
+        }
     }
 
     private void deleteOrder() throws IOException {

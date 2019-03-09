@@ -5,28 +5,17 @@ import com.gorbunov.dao.dbcp.DataBaseConnection;
 import com.gorbunov.domain.Client;
 import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
+import com.gorbunov.utils.ReaderIniFile;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OrderDaoImpl implements OrderDao {
 
-    private long clientId;
-    private String clientName;
-    private String clientSurname;
-    private int clientAge;
-    private String clientPhone;
-    private String clientEmail;
-    private long productId;
-    private String productName;
-    private String productDescription;
-    private float productPrice;
-
-    private Map<Long, Order> orders = new HashMap<>();
     private static OrderDao orderDao = new OrderDaoImpl();
     DataBaseConnection dbConnection = new DataBaseConnection();
 
@@ -42,44 +31,119 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void addOrder(long id, String refId, float amount) {
-        String sql = "insert into SHOP.\"ORDER\" (CLIENT_ID, REF_PRODUCT_CONTEINER, AMOUNT) VALUES (" + id + ", '" + refId + "', " + amount + ");";
-        dbConnection.sqlStatement(sql);
+        String sql = ReaderIniFile.iniReader("Order operation", "ADD_NEW_ORDER");
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.setString(2, refId);
+            preparedStatement.setFloat(3, amount);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public List<Order> listOrders() {
-        return new ArrayList<>(orders.values());
+    public List<Order> showAllOrders() {
+        long orderId = 0;
+        String refId;
+        float amount = 0;
+        String clientName;
+        String clientSurname;
+        int clientAge;
+        String clientPhone;
+        String clientEmail;
+        String productName;
+        String productDescription;
+        float price;
+        List<Order> orders = new ArrayList<>();
+        Order order;
+        Client client = null;
+        List<Product> products = new ArrayList<>();
+        List<List<Product>> productsOrder = new ArrayList<>();
+        String tempRefId = "";
+        int countOrder = 0;
+
+        String sql = ReaderIniFile.iniReader("Order operation", "SHOW_ALL_ORDERS");
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                orderId = resultSet.getLong(1);
+                refId = resultSet.getString(2);
+                amount = resultSet.getFloat(3);
+                clientName = resultSet.getString(4);
+                clientSurname = resultSet.getString(5);
+                clientAge = resultSet.getInt(6);
+                clientPhone = resultSet.getString(7);
+                clientEmail = resultSet.getString(8);
+                productName = resultSet.getString(9);
+                productDescription = resultSet.getString(10);
+                price = resultSet.getFloat(11);
+
+                if ("".equals(tempRefId)) {
+                    tempRefId = refId;
+                }
+                if (!tempRefId.equals(refId)) {
+                    productsOrder.add(new ArrayList<>(products));
+                    order = new Order(orderId, client, productsOrder.get(countOrder), amount);
+                    countOrder++;
+                    orders.add(order);
+                    products.clear();
+                }
+                if (products.isEmpty()) {
+                    client = new Client(clientName, clientSurname, clientPhone, clientAge, clientEmail);
+                }
+                products.add(new Product(productName, productDescription, price));
+                tempRefId = refId;
+            }
+            productsOrder.add(new ArrayList<>(products));
+            order = new Order(orderId, client, productsOrder.get(countOrder), amount);
+            orders.add(order);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+            return orders;
     }
 
     @Override
-    public boolean modifyOrder(long id, Order order) {
-        return false;
-    }
+    public void deleteOrder(long id) {
+        String sql = ReaderIniFile.iniReader("Order operation", "DELETE_ORDER");
 
-    @Override
-    public boolean deleteOrder(long id) {
-        Order value = orders.get(id);
-        if(value != null) {
-            orders.remove(id);
-            return true;
-        } else {
-            return false;
+        try(Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public Order showOrder(String refId) {
+        long clientId;
+        String clientName;
+        String clientSurname;
+        int clientAge;
+        String clientPhone;
+        String clientEmail;
+        long productId;
+        String productName;
+        String productDescription;
+        float productPrice;
+        float amount = 0;
+
         List<Product> products = new ArrayList<>();
         Client client = null;
 
-        String sql = "select t2.ID, t2.NAME, t2.SURNAME, t2.AGE, t2.PHONE_NUM, t2.EMAIL, t4.ID, t4.PRODUCT_NAME, t4.DESCRIPTION, t4.PRICE\n" +
-                     "from SHOP.\"ORDER\" as t1\n" +
-                     "join SHOP.CLIENT as t2 on t1.CLIENT_ID = t2.ID\n" +
-                     "join SHOP.PRODUCT_CONTAINER as t3 on t1.REF_PRODUCT_CONTEINER = t3.REF_ID\n" +
-                     "join SHOP.PRODUCT as t4 on t3.PRODUCT_ID = t4.ID\n" +
-                     "where t3.REF_ID = '" + refId + "';";
-        try {
-            ResultSet resultSet = dbConnection.getResultSet(sql);
+        String sql = ReaderIniFile.iniReader("Order operation", "SHOW_ORDER");
+
+        try(Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, refId);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 clientId = resultSet.getLong(1);
                 clientName = resultSet.getString(2);
@@ -91,13 +155,13 @@ public class OrderDaoImpl implements OrderDao {
                 productName = resultSet.getString(8);
                 productDescription = resultSet.getString(9);
                 productPrice = resultSet.getFloat(10);
+                amount = resultSet.getFloat(11);
                 products.add(new Product(productId, productName, productDescription, productPrice));
                 client = new Client(clientId, clientName, clientSurname, clientAge, clientPhone, clientEmail);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new Order(client, products);
+        return new Order(client, products, amount);
     }
 }

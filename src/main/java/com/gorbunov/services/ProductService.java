@@ -36,6 +36,4 @@ public interface ProductService {
      * Get information about products
      * */
     List<Product> productList();
-
-    List<Product> showProductContainer(String ref);
 }

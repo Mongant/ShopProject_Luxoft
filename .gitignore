@@ -1,11 +1,19 @@
 #gitignor file
+
 # ignor idea folder
 .idea
+
 #ignor *.iml file
 *.iml
+
 #ignor target folder
 /target
+
 #ignor out folder
 out
+
 #ignor resources folder
 src/main/resources/
+
+#ignore JUnit test folder
+src/main/test/

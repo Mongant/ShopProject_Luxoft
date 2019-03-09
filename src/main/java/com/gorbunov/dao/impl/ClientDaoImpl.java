@@ -3,9 +3,9 @@ package com.gorbunov.dao.impl;
 import com.gorbunov.dao.ClientDao;
 import com.gorbunov.dao.dbcp.DataBaseConnection;
 import com.gorbunov.domain.Client;
+import com.gorbunov.utils.ReaderIniFile;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +13,7 @@ import java.util.Map;
 
 public class ClientDaoImpl implements ClientDao {
 
-    private long clientId;
-    private String clientName;
-    private String clientSurname;
-    private int clientAge;
-    private String clientPhone;
-    private String clientEmail;
-
-    DataBaseConnection dbConnection = new DataBaseConnection();
+    private DataBaseConnection dbConnection = new DataBaseConnection();
     private Map<Long, Client> clients = new HashMap<>();
     private static ClientDao clientDao = new ClientDaoImpl();
 
@@ -36,20 +29,39 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public void addClient(Client client) {
-            String sql = "insert into SHOP.CLIENT(NAME, SURNAME, AGE, PHONE_NUM, EMAIL) " +
-                        "values ('" + client.getName() + "', '" + client.getSurname() + "', " + client.getAge() + ", '" + client.getPhone() + "', '" + client.getEmail() + "');" ;
-            dbConnection.sqlStatement(sql);
+        String sql = ReaderIniFile.iniReader("Client operations", "ADD_NEW_CLIENT");
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, client.getName());
+            preparedStatement.setString(2, client.getSurname());
+            preparedStatement.setInt(3, client.getAge());
+            preparedStatement.setString(4, client.getPhone());
+            preparedStatement.setString(5, client.getEmail());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public Client getClient(long id) {
+        long clientId;
+        String clientName;
+        String clientSurname;
+        int clientAge;
+        String clientPhone;
+        String clientEmail;
+
         Client client = null;
-        try {
-            String sql = "select ID, NAME, SURNAME, AGE, PHONE_NUM, EMAIL\n" +
-                    "from SHOP.CLIENT\n" +
-                    "where ID = " + id + ";";
-            ResultSet resultSet = dbConnection.getResultSet(sql);
-            while (resultSet.next()) {
+        String sql = ReaderIniFile.iniReader("Client operations", "GET_CLIENT");
+
+        try(Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
                 clientId = resultSet.getInt(1);
                 clientName = resultSet.getString(2);
                 clientSurname = resultSet.getString(3);
@@ -58,7 +70,7 @@ public class ClientDaoImpl implements ClientDao {
                 clientEmail = resultSet.getString(6);
                 client = new Client(clientId, clientName, clientSurname, clientAge, clientPhone, clientEmail);
             }
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
         }
         return client;
@@ -66,10 +78,19 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public List<Client> clientList() {
+        long clientId;
+        String clientName;
+        String clientSurname;
+        int clientAge;
+        String clientPhone;
+        String clientEmail;
+
         List<Client> clientsList = new ArrayList<>();
-        try {
-            String sql = "select * from SHOP.CLIENT";
-            ResultSet resultSet = dbConnection.getResultSet(sql);
+        String sql = ReaderIniFile.iniReader("Client operations", "CLIENTS_LIST");
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while(resultSet.next()) {
                 clientId = resultSet.getLong(1);
                 clientName = resultSet.getString(2);
@@ -81,7 +102,7 @@ public class ClientDaoImpl implements ClientDao {
                 Client client = new Client(clientId, clientName, clientSurname, clientAge, clientPhone, clientEmail);
                 clientsList.add(client);
             }
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
         }
         return clientsList;
@@ -89,17 +110,33 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public void updateClient(long id, Client client) {
-        String sql = "update SHOP.CLIENT" +
-                     "\nset NAME = '" + client.getName() + "', SURNAME = '" + client.getSurname() + "', AGE = " + client.getAge() + ", PHONE_NUM = '" + client.getPhone() + "', EMAIL = '" + client.getEmail() +
-                     "' \nwhere ID = " + id + ";";
-        dbConnection.sqlUpdate(sql);
-        dbConnection.closeDataBaseConnection();
+        String sql = ReaderIniFile.iniReader("Client operations", "UPDATE_CLIENT");
+
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, client.getName());
+            preparedStatement.setString(2, client.getSurname());
+            preparedStatement.setInt(3, client.getAge());
+            preparedStatement.setString(4, client.getPhone());
+            preparedStatement.setString(5, client.getEmail());
+            preparedStatement.setLong(6, id);
+            preparedStatement.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteClient(long id) {
-        String sql = "delete from SHOP.CLIENT where ID = " + id + ";";
-        dbConnection.sqlStatement(sql);
+        String sql = ReaderIniFile.iniReader("Client operations", "DELETE_CLIENT");
+
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

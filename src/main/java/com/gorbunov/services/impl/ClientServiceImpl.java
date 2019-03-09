@@ -45,7 +45,6 @@ public class ClientServiceImpl implements ClientService {
         validationService.validatePhoneNum(phone);
         validationService.validateEmail(email);
         Client client = new Client(name, surname, phone, age, email);
-        client.setId(id);
         clientDao.updateClient(id, client);
     }
 
@@ -56,10 +55,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<Client> listClients() {
-        if(!clientDao.clientList().isEmpty()){
-            return clientDao.clientList();
+        List<Client> clients = clientDao.clientList();
+        if(!clients.isEmpty()){
+            return clients;
         }
         System.err.println("Client list is empty!");
-        return clientDao.clientList();
+        return clients;
     }
 }

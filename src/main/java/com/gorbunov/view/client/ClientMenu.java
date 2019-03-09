@@ -12,6 +12,9 @@ import com.gorbunov.view.MainMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ClientMenu {
 
@@ -22,7 +25,11 @@ public class ClientMenu {
     private ProductContainerService productContainerService;
     private OrderService orderService;
 
-    public ClientMenu(BufferedReader br, ClientService clientService, ProductService productService, ProductContainerService productContainerService, OrderService orderService) {
+    public ClientMenu(BufferedReader br,
+                      ClientService clientService,
+                      ProductService productService,
+                      ProductContainerService productContainerService,
+                      OrderService orderService) {
         this.br = br;
         this.clientService = clientService;
         this.productService = productService;
@@ -93,11 +100,11 @@ public class ClientMenu {
     private void shoppingBasket() throws IOException, BusinessException {
         boolean isRunning = true;
 
-        System.out.println("\n1. Show products");
+        System.out.println("\n1. Show all products");
         System.out.println("2. Add product on basket");
         System.out.println("3. Remove product on basket");
-        System.out.println("4. Show all my purchases");
-        System.out.println("5. Buy");
+        System.out.println("4. Show products on basket");
+        System.out.println("5. Buy (Show order)");
         System.out.println("0. Return in client menu");
 
         while (isRunning) {
@@ -105,23 +112,23 @@ public class ClientMenu {
             String input = br.readLine();
             switch (input) {
                 case "1":
-                    System.out.println("Show products");
+                    System.out.println("Show all products");
                     showProductList();
                     break;
                 case "2":
                     System.out.println("Add product on basket");
-                    addProductBasket();
+                    addProductContainer();
                     break;
                 case "3":
                     System.out.println("Remove product on basket");
-                    showOrder();
+                    deleteProductContainer();
                     break;
                 case "4":
-                    System.out.println("Show all my purchases");
-                    showPurchases();
+                    System.out.println("Show products on basket");
+                    showProductContainer();
                     break;
                 case "5":
-                    System.out.println("Buy");
+                    System.out.println("Buy (Show order)");
                     showOrder();
                     break;
                 case "0":
@@ -147,10 +154,11 @@ public class ClientMenu {
         shoppingBasket();
     }
 
-    private void addProductBasket() throws IOException, BusinessException {
+    private void addProductContainer() throws IOException, BusinessException {
         System.out.print("Enter product id: ");
         long id = Long.parseLong(br.readLine());
-        if(productService.getProduct(id) != null) {
+        Product product = productService.getProduct(id);
+        if(product != null) {
             productContainerService.addProductContainer(id, refId);
         } else {
             System.err.println("Product ID: " + id + " does not exist");
@@ -158,20 +166,29 @@ public class ClientMenu {
         shoppingBasket();
     }
 
-    private void showPurchases() throws IOException, BusinessException {
-        StringBuilder sb = new StringBuilder();
-        for(Product product : productService.showProductContainer(refId)) {
-            sb.append("\nId: ").append(product.getId())
-                    .append("; Product name: ").append(product.getName())
-                    .append("; Description: ").append(product.getDescription())
-                    .append("; Price: ").append(product.getPrice());
+    private void deleteProductContainer() throws IOException, BusinessException {
+        System.out.print("Enter product id: ");
+        long id = Long.parseLong(br.readLine());
+        if(productContainerService.getProductContainerItem(id, refId) != null) {
+            productContainerService.deleteProductContainer(id, refId);
+        } else {
+            System.err.println("Product ID: " + id + " does not exist");
         }
-        System.out.println(sb.toString());
         shoppingBasket();
     }
 
+    private void showProductContainer() {
+        StringBuilder sb = new StringBuilder();
+        Iterator it = productContainerService.showProductContainer(refId).getProductsContainer().entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            sb.append("\nID: ").append(pair.getKey()).append(" ").append(pair.getValue());
+        }
+        System.out.println(sb.toString());
+    }
+
     private void showOrder() throws IOException, BusinessException {
-        orderService.addOrder(clientService.listClients().get(clientService.listClients().size() -1).getId(), refId, productService.showProductContainer(refId));
+        orderService.addOrder(clientService.listClients().get(clientService.listClients().size() -1).getId(), refId, new ArrayList<Product>(productContainerService.showProductContainer(refId).getProductsContainer().values()));
         Order order = orderService.showOrder(refId);
         StringBuilder sb = new StringBuilder();
         sb.append("\n---------------------------------------------------\n");
@@ -185,6 +202,7 @@ public class ClientMenu {
         sb.append("\nThank you for your purchase!");
         sb.append("\n---------------------------------------------------\n");
         System.out.println(sb.toString());
+        refId = GenerateId.generateId();
         shoppingBasket();
     }
 }
