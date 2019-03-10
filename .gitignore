@@ -16,4 +16,4 @@ out
 src/main/resources/
 
 #ignore JUnit test folder
-src/main/test/
+#src/main/test/

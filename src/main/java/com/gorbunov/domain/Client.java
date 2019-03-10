@@ -1,5 +1,7 @@
 package com.gorbunov.domain;
 
+import java.util.Objects;
+
 public class Client {
 
     private long id = 0;
@@ -84,5 +86,23 @@ public class Client {
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return id == client.id &&
+                age == client.age &&
+                Objects.equals(name, client.name) &&
+                Objects.equals(surname, client.surname) &&
+                Objects.equals(phone, client.phone) &&
+                Objects.equals(email, client.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, phone, email, age);
     }
 }
