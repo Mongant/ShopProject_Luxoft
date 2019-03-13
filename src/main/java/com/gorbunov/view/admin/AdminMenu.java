@@ -257,18 +257,24 @@ public class AdminMenu {
         }
     }
 
-    private void showClientsList() throws IOException, BusinessException {
+    private void showClientsList() throws BusinessException {
         StringBuilder sb = new StringBuilder();
-        for (Client client : clientService.listClients()) {
-            sb.append("\nId: ").append(client.getId()).
-                    append(". Name: ").append(client.getName()).
-                    append("; Surname: ").append(client.getSurname()).
-                    append("; Phone: ").append(client.getPhone()).
-                    append("; Age: ").append(client.getAge()).
-                    append("; Email: ").append(client.getEmail());
+        try {
+            for (Client client : clientService.listClients()) {
+                sb.append("\nId: ").append(client.getId()).
+                        append(". Name: ").append(client.getName()).
+                        append("; Surname: ").append(client.getSurname()).
+                        append("; Phone: ").append(client.getPhone()).
+                        append("; Age: ").append(client.getAge()).
+                        append("; Email: ").append(client.getEmail());
+            }
+            System.out.println(sb.toString());
+            clientAdminOptions();
+        } catch (NullPointerException e) {
+            System.err.println("Client list is empty!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println(sb.toString());
-        clientAdminOptions();
     }
 
     private void createProduct() throws IOException, BusinessException {

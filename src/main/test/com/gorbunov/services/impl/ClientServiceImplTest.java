@@ -56,13 +56,12 @@ public class ClientServiceImplTest {
         Mockito.when(clientDao.getClient(id)).thenReturn(expectedClient);
 
         //THEN
-        Assert.assertNull(clientDao.getClient(id));
+        Assert.assertNull(clientService.getClient(id));
     }
 
     @Test
     public void emptyClientListTest() {
         //GIVEN
-        final int LIST_SIZE = 0;
         List<Client> clients;
 
         //WHEN
@@ -70,13 +69,12 @@ public class ClientServiceImplTest {
         Mockito.when(clientDao.clientList()).thenReturn(clients);
 
         //THEN
-        Assert.assertEquals(LIST_SIZE, clientDao.clientList().size());
+        Assert.assertNull(clientService.listClients());
     }
 
     @Test
     public  void  FilledClientListTest() {
         //GIVEN
-        final int LIST_SIZE = 3;
         List<Client> clients;
 
         //WHEN
@@ -87,7 +85,7 @@ public class ClientServiceImplTest {
         Mockito.when(clientDao.clientList()).thenReturn(clients);
 
         //THEN
-        Assert.assertEquals(LIST_SIZE, clientDao.clientList().size());
+        Assert.assertEquals(clients, clientService.listClients());
     }
 
     @After

@@ -54,12 +54,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> listClients() {
+    public List<Client> listClients() throws NullPointerException{
         List<Client> clients = clientDao.clientList();
         if(!clients.isEmpty()){
             return clients;
         }
-        System.err.println("Client list is empty!");
-        return clients;
+        return null;
     }
 }

@@ -38,5 +38,5 @@ public interface ClientService {
      * Method return clients list
      * @return clients information
      * */
-    List<Client> listClients();
+    List<Client> listClients() throws NullPointerException;
 }
