@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class ReaderIniFile {
 
-    private static final String INI_FILE_PATH = "src/main/resources/SQL.ini";
+    private static final String INI_FILE_PATH = "/home/mongant/Workspace/ShopProject_Luxoft/src/main/resources/SQL.ini";
 
     public static String iniReader(String category, String operation) {
         String sql = "";

@@ -23,16 +23,13 @@ public class ProductServiceImplTest {
     @Test
     public void createProduct() {
         //GIVEN
-        long id = 1;
         String productName = "TestProduct";
         String productDescription = "TestDescription";
         float price = 100;
 
         //WHEN
         Product expectedProduct = new Product(productName, productDescription, price);
-        Mockito.when(productDao.addProduct()).thenReturn(expectedProduct);
         Product product = productService.createProduct(productName, productDescription, price);
-
     }
 
     @Test
