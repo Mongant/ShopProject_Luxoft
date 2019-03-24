@@ -1,7 +1,6 @@
 package com.gorbunov.services.impl;
 
 import com.gorbunov.dao.ProductDao;
-import com.gorbunov.dao.impl.ProductDaoImpl;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.ProductService;
 
@@ -9,7 +8,11 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
 
-    ProductDao productDao = ProductDaoImpl.getInstance();
+    ProductDao productDao;
+
+    public ProductServiceImpl(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
     @Override
     public Product createProduct(String name, String description, float price) {

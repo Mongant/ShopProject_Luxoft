@@ -3,6 +3,9 @@ package com.gorbunov;
 
 import com.gorbunov.dao.dbcp.CreatorDataBase;
 import com.gorbunov.dao.impl.ClientDaoImpl;
+import com.gorbunov.dao.impl.OrderDaoImpl;
+import com.gorbunov.dao.impl.ProductContainerDaoImpl;
+import com.gorbunov.dao.impl.ProductDaoImpl;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductContainerService;
@@ -25,9 +28,9 @@ public class MainApp {
         new CreatorDataBase().createDataBaseStructure();
         ValidationService validationService = new ValidationServiceImpl();
         ClientService clientService = new ClientServiceImpl(ClientDaoImpl.getInstance(), validationService);
-        ProductService productService = new ProductServiceImpl();
-        ProductContainerService productContainerService = new ProductContainerServiceImpl();
-        OrderService orderService = new OrderServiceImpl();
+        ProductService productService = new ProductServiceImpl(ProductDaoImpl.getInstance());
+        ProductContainerService productContainerService = new ProductContainerServiceImpl(ProductContainerDaoImpl.getInstance());
+        OrderService orderService = new OrderServiceImpl(OrderDaoImpl.getInstance());
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         MainMenu mainMenu = new MainMenu(bf, clientService, productService, productContainerService, orderService);
         mainMenu.showMenu();

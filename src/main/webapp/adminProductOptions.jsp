@@ -14,13 +14,13 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="addNewProduct.jsp"><b>1. Add new product</b></a></td></tr>
+            <td><a href="addNewProduct.jsp"><b>Add new product</b></a></td></tr>
         <tr>
-            <td><a href="updateProduct.jsp"><b>2. Update product information</b></a></td></tr>
+            <td><a href="updateProduct.jsp"><b>Update product information</b></a></td></tr>
         <tr>
-            <td><a href="deleteProduct.jsp"><b>3. Delete product</b></a></td></tr>
+            <td><a href="deleteProduct.jsp"><b>Delete product</b></a></td></tr>
         <tr>
-            <td><a href="/products"><b>4. Show products list</b></a></td></tr>
+            <td><a href="/product"><b>Show products list</b></a></td></tr>
         </tbody>
     </table>
 </body>

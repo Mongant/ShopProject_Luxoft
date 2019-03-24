@@ -1,7 +1,6 @@
 package com.gorbunov.services.impl;
 
 import com.gorbunov.dao.OrderDao;
-import com.gorbunov.dao.impl.OrderDaoImpl;
 import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.OrderService;
@@ -10,7 +9,11 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
-    OrderDao orderDao = OrderDaoImpl.getInstance();
+    OrderDao orderDao;
+
+    public OrderServiceImpl(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
 
     @Override
     public void addOrder(long clientId, String refId, List<Product> products) {

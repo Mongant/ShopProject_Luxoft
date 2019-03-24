@@ -1,12 +1,10 @@
-// Правильно оформить сервлеты с методами doGet, doPost,doDelete
-// Закончить клиента с doPut для обновления клиента
-
 package com.gorbunov.servlets;
 
 import com.gorbunov.domain.Client;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.validator.BusinessException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,26 +20,26 @@ public class ClientServlet extends HttpServlet {
         this.clientService = clientService;
     }
 
-
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         List<Client> clients = clientService.listClients();
-        if(clients != null) {
+        if(!clients.isEmpty()) {
             out.println("<center><h1> Client list</h1></center>");
-            for(Client client : clientService.listClients()) {
-                out.print("<h5> Client name: " + client.getName() + "</h5>");
-                out.print("<h5> Client surname: " + client.getSurname() + "</h5>");
-                out.print("<h5> Client age: " + client.getAge() + "</h5>");
-                out.print("<h5> Phone number: " + client.getPhone() + "</h5>");
-                out.print("<h5> Email: "+ client.getEmail()+"</h5>");
+            for(Client client : clients) {
+                out.print("<h4> Client ID: " + client.getId() + "</h4>");
+                out.print("<h4> Client name: " + client.getName() + "</h4>");
+                out.print("<h4> Client surname: " + client.getSurname() + "</h4>");
+                out.print("<h4> Client age: " + client.getAge() + "</h4>");
+                out.print("<h4> Phone number: " + client.getPhone() + "</h4>");
+                out.print("<h4> Email: " + client.getEmail() + "</h4>");
                 out.print("------------------------------------------<br>");
             }
         } else {
-            out.println("<h5>Client list is empty!</h5>");
+            out.print("<center><h1>The client list is empty!</h1></center>");
         }
-    }
+     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -51,15 +49,36 @@ public class ClientServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         try {
-            clientService.createClient(name, surname, phone, Integer.parseInt(age),email);
-        } catch (BusinessException e) {
+            clientService.createClient(name, surname, phone, Integer.parseInt(age), email);
+            response.sendRedirect("http://localhost:8080/clientsList.jsp");
+        } catch(BusinessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-//    @Override
-//    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String id = req.getParameter("id");
-//        clientService.deleteClient(Long.parseLong(id));
-//    }
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String age = request.getParameter("age");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        try {
+            clientService.modifyClient(Long.parseLong(id), name, surname, phone, Integer.parseInt(age), email);
+            response.sendRedirect("http://localhost:8080/clientsList.jsp");
+        } catch (BusinessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("id");
+        clientService.deleteClient(Long.parseLong(id));
+    }
 }

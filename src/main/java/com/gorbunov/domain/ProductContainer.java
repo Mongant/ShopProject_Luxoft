@@ -25,10 +25,6 @@ public class ProductContainer {
         return productsContainer;
     }
 
-    public void setProductsContainer(Map<Long, Product> productsContainer) {
-        this.productsContainer = productsContainer;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

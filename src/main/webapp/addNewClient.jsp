@@ -15,12 +15,12 @@
         <tbody>
         <tr>
             <td>
-                <form action="/clients" method="post">
-                    Name......<input type="text" name="name"/><br>
-                    Surname.<input type="text" name="surname"/><br>
-                    Age........<input type="text" name="age"/><br>
-                    Phone.....<input type="text" name="phone"/><br>
-                    Email.....<input type="text" name="email"/><br><br>
+                <form action="/client" method="post">
+                    <b>Name</b><div><input type="text" name="name"/></div><br>
+                    <b>Surname</b><div><input type="text" name="surname"/></div><br>
+                    <b>Age</b><div><input type="text" name="age"/></div><br>
+                    <b>Phone</b><div><input type="text" name="phone"/></div><br>
+                    <b>Email</b><div><input type="text" name="email"/></div><br>
                     <input type="submit" value="Create client"/>
                 </form></td></tr>
         </tbody>

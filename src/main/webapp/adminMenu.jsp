@@ -14,11 +14,13 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="adminClientOptions.jsp"><b>1. Client options</b></a></td></tr>
+            <td><a href="adminClientOptions.jsp"><b>Client options</b></a></td></tr>
         <tr>
-            <td><a href="adminProductOptions.jsp"><b>2. Product options</b></a></td></tr>
+            <td><a href="adminProductOptions.jsp"><b>Product options</b></a></td></tr>
         <tr>
-            <td><a href="adminOrderOptions.jsp"><b>3. Order options</b></a></td></tr>
+            <td><a href="adminOrderOptions.jsp"><b>Order options</b></a></td></tr>
+        <tr>
+            <td><button type="button" name="back" onclick="history.back()">Back</button></td></tr>
         </tbody>
     </table>
 </body>

@@ -3,8 +3,10 @@
 <html>
 <head>
     <title>Delete product</title>
+    <link type="text/css" rel="stylesheet" href="/style/tableStyle.css"/>
 </head>
 <body>
+<jsp:include page="/product" />
 <table class="cinereousTable">
     <thead>
     <tr>
@@ -14,8 +16,8 @@
     <tbody>
     <tr>
         <td>
-            <form action="/delete_product" method="post">
-                Id <input type="text" name="id"><br><br>
+            <form action="/product" method="delete">
+                <b>ID</b><div><input type="text" name="id"></div><br>
                 <input type="submit" value="Delete product"/>
             </form></td></tr>
     </tbody>

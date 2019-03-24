@@ -14,13 +14,15 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="addNewClient.jsp"><b>1. Add new client</b></a></td></tr>
+            <td><a href="addNewClient.jsp"><b>Add new client</b></a></td></tr>
         <tr>
-            <td><a href="updateClient.jsp"><b>2. Update client information</b></a></td></tr>
+            <td><a href="updateClient.jsp"><b>Update client information</b></a></td></tr>
         <tr>
-            <td><a href="deleteClient.jsp"><b>3. Delete client</b></a></td></tr>
+            <td><a href="deleteClient.jsp"><b>Delete client</b></a></td></tr>
         <tr>
-            <td><a href="/clients"><b>4. Show clients list</b></a></td></tr>
+            <td><a href="/client"><b>Show clients list</b></a></td></tr>
+        <tr>
+            <td><button type="button" name="back" onclick="history.back()">Back</button></td></tr>
         </tbody>
     </table>
 </body>
