@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Order options</title>
+    <link type="text/css" rel="stylesheet" href="/style/tableStyle.css"/>
 </head>
 <body>
     <table class="cinereousTable">
@@ -17,7 +18,7 @@
         <tr>
             <td><a href="adminProductOptions.jsp"><b>Delete order</b></a></td></tr>
         <tr>
-            <td><a href="adminOrderOptions.jsp"><b>Show all orders</b></a></td></tr>
+            <td><a href="/order"><b>Show all orders</b></a></td></tr>
         <tr>
             <td><button type="button" name="back" onclick="history.back()">Back</button></td></tr>
         </tbody>
