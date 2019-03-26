@@ -39,12 +39,13 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String productName = request.getParameter("productName");
         String productDescription = request.getParameter("productDescription");
         String price = request.getParameter("price");
         try {
             productService.createProduct(productName, productDescription, Float.parseFloat(price));
-            response.sendRedirect("http://localhost:8080/productList.jsp");
+            response.sendRedirect(url+ "/productList.jsp");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,13 +53,14 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String productId = request.getParameter("productId");
         String productName = request.getParameter("productName");
         String productDescription = request.getParameter("productDescription");
         String price = request.getParameter("price");
         try {
             productService.updateProduct(Long.parseLong(productId), productName, productDescription, Float.parseFloat(price));
-            response.sendRedirect("http://localhost:8080/productList.jsp");
+            response.sendRedirect(url+ "/productList.jsp");
         } catch (IOException e) {
             e.printStackTrace();
         }

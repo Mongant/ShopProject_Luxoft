@@ -35,7 +35,6 @@ public class ProductContainerServlet extends HttpServlet {
                 out.print("<h4>" + sb.toString() + "</h4>");
             }
             System.out.println(sb.toString());
-            sb.setLength(0);
         } else {
             out.print("<center><h1>The product container list is empty!</h1></center>");
         }
@@ -43,16 +42,19 @@ public class ProductContainerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String refId = request.getSession().getId();
         String productId = request.getParameter("productId");
-            productContainerService.addProductContainer(Long.parseLong(productId), refId);
-            response.sendRedirect("http://localhost:8080/productContainerList.jsp");
+        productContainerService.addProductContainer(Long.parseLong(productId), refId);
+        response.sendRedirect(url + "/productContainerList.jsp");
     }
 
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String refId = request.getSession().getId();
         String id = request.getParameter("id");
         productContainerService.deleteProductContainer(Long.parseLong(id), refId);
+        response.sendRedirect(url + "/productContainerList.jsp");
     }
 }

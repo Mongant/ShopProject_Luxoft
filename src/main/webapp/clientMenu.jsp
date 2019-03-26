@@ -16,9 +16,9 @@
         <tr>
             <td><a href="clientDoShoppingOptions.jsp"><b>Shopping</b></a></td></tr>
         <tr>
-            <td><a href="adminProductOptions.jsp"><b>Client settings</b></a></td></tr>
+            <td><a href="clientSettings.jsp"><b>Client settings</b></a></td></tr>
         <tr>
-            <td><button type="button" name="back" onclick="history.back()">Back</button></td></td></tr>
+            <td><button type="button" name="back" onclick="history.back()">Back</button></td></tr>
         </tbody>
     </table>
 </body>

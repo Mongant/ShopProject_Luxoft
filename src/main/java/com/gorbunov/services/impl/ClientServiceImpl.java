@@ -9,7 +9,6 @@ import com.gorbunov.validator.ValidationService;
 import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
-
     private ClientDao clientDao;
     private ValidationService validationService;
 

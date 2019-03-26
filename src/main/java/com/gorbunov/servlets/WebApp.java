@@ -8,7 +8,6 @@ import com.gorbunov.dao.impl.ClientDaoImpl;
 import com.gorbunov.dao.impl.OrderDaoImpl;
 import com.gorbunov.dao.impl.ProductContainerDaoImpl;
 import com.gorbunov.dao.impl.ProductDaoImpl;
-import com.gorbunov.domain.Product;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
 import com.gorbunov.services.ProductContainerService;

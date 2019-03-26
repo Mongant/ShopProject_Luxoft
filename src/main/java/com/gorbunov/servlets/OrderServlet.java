@@ -1,8 +1,11 @@
 package com.gorbunov.servlets;
 
+import com.gorbunov.domain.Client;
 import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
+import com.gorbunov.services.ClientService;
 import com.gorbunov.services.OrderService;
+import com.gorbunov.services.ProductContainerService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,14 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderServlet extends HttpServlet {
 
     OrderService orderService;
+    ClientService clientService;
+    ProductContainerService productContainerService;
 
-    public OrderServlet(OrderService orderService) {
+    public OrderServlet(OrderService orderService, ClientService clientService, ProductContainerService productContainerService) {
         this.orderService = orderService;
+        this.clientService = clientService;
+        this.productContainerService = productContainerService;
     }
 
     @Override
@@ -47,17 +55,20 @@ public class OrderServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String session = request.getSession().getId();
+        List<Client> clients = clientService.listClients();
+        List<Product> products = new ArrayList<>(productContainerService.showProductContainer(session).getProductsContainer().values());
+        orderService.addOrder(clients.get(clientService.listClients().size() -1).getId(), session, products);
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doPut(request, response);
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doDelete(request, response);
     }
 }

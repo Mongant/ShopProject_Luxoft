@@ -43,6 +43,7 @@ public class ClientServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String age = request.getParameter("age");
@@ -50,7 +51,7 @@ public class ClientServlet extends HttpServlet {
         String email = request.getParameter("email");
         try {
             clientService.createClient(name, surname, phone, Integer.parseInt(age), email);
-            response.sendRedirect("http://localhost:8080/clientsList.jsp");
+            response.sendRedirect(url + "/clientsList.jsp");
         } catch(BusinessException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -60,6 +61,7 @@ public class ClientServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String id = request.getParameter("id");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
@@ -68,7 +70,7 @@ public class ClientServlet extends HttpServlet {
         String email = request.getParameter("email");
         try {
             clientService.modifyClient(Long.parseLong(id), name, surname, phone, Integer.parseInt(age), email);
-            response.sendRedirect("http://localhost:8080/clientsList.jsp");
+            response.sendRedirect(url + "/clientsList.jsp");
         } catch (BusinessException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -77,8 +79,10 @@ public class ClientServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
-        String id = req.getParameter("id");
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String id = request.getParameter("id");
         clientService.deleteClient(Long.parseLong(id));
+        response.sendRedirect(url + "/clientsList.jsp");
     }
 }
