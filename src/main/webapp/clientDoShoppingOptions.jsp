@@ -22,7 +22,9 @@
         <tr>
             <td><a href="/product_container"><b>Show products on basket</b></a></td></tr>
         <tr>
-            <td><a href="adminOrderOptions.jsp"><b>Buy (Show order)</b></a></td></tr>
+            <td><form action="/order" method="post">
+                <input type="submit" name="buy" value="Buy (Show order)" />
+            </form></td></tr>
         <tr>
             <td><button type="button" name="back" onclick="history.back()">Back</button></td></tr>
         </tbody>

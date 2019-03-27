@@ -43,7 +43,7 @@ public class WebApp implements ServletContextListener {
         ServletContext servletContext = sce.getServletContext();
         servletContext.addServlet("ClientServlet", new ClientServlet(clientService)).addMapping("/client");
         servletContext.addServlet("ProductServlet", new ProductServlet(productService)).addMapping("/product");
-        servletContext.addServlet("OrderServlet", new OrderServlet(orderService)).addMapping("/order");
+        servletContext.addServlet("OrderServlet", new OrderServlet(orderService, clientService, productContainerService)).addMapping("/order");
         servletContext.addServlet("ProductContainerServlet", new ProductContainerServlet(productContainerService)).addMapping("/product_container");
     }
 }

@@ -55,11 +55,13 @@ public class OrderServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String session = request.getSession().getId();
         List<Client> clients = clientService.listClients();
         List<Product> products = new ArrayList<>(productContainerService.showProductContainer(session).getProductsContainer().values());
         orderService.addOrder(clients.get(clientService.listClients().size() -1).getId(), session, products);
+        response.sendRedirect(url + "/orderList.jsp");
     }
 
     @Override
