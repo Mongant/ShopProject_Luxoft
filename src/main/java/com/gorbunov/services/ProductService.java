@@ -12,7 +12,7 @@ public interface ProductService {
      * @param description sets the description for product
      * @param price sets the price for product
      * */
-    Product createProduct(String name, String description, float price);
+    Product addProduct(String name, String description, float price);
 
     /**
      * Get product information by id

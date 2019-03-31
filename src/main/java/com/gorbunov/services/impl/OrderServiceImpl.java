@@ -4,16 +4,14 @@ import com.gorbunov.dao.OrderDao;
 import com.gorbunov.domain.Order;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
+    @Autowired
     OrderDao orderDao;
-
-    public OrderServiceImpl(OrderDao orderDao) {
-        this.orderDao = orderDao;
-    }
 
     @Override
     public void addOrder(long clientId, String refId, List<Product> products) {

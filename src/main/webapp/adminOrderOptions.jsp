@@ -14,11 +14,9 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="addNewOrder.jsp"><b>Create order</b></a></td></tr>
-        <tr>
-            <td><a href="adminProductOptions.jsp"><b>Delete order</b></a></td></tr>
-        <tr>
             <td><a href="/order"><b>Show all orders</b></a></td></tr>
+        <tr>
+            <td><a href="deleteOrder.jsp"><b>Delete order</b></a></td></tr>
         <tr>
             <td><button type="button" name="back" onclick="history.back()">Back</button></td></tr>
         </tbody>

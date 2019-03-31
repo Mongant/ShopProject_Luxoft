@@ -16,18 +16,7 @@ import java.util.List;
 
 public class OrderDaoImpl implements OrderDao {
 
-    private static OrderDao orderDao = new OrderDaoImpl();
     DataBaseConnection dbConnection = new DataBaseConnection();
-
-    private OrderDaoImpl() {
-    }
-
-    public static OrderDao getInstance() {
-        if(orderDao == null) {
-            orderDao = new OrderDaoImpl();
-        }
-        return orderDao;
-    }
 
     @Override
     public void addOrder(long id, String refId, float amount) {

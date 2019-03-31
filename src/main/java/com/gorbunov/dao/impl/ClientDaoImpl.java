@@ -15,16 +15,8 @@ public class ClientDaoImpl implements ClientDao {
 
     private DataBaseConnection dbConnection = new DataBaseConnection();
     private Map<Long, Client> clients = new HashMap<>();
-    private static ClientDao clientDao = new ClientDaoImpl();
 
     private ClientDaoImpl() {
-    }
-
-    public static ClientDao getInstance() {
-        if (clientDao == null) {
-            clientDao = new ClientDaoImpl();
-        }
-        return clientDao;
     }
 
     @Override

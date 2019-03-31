@@ -16,7 +16,7 @@
         <tbody>
         <tr>
             <td>
-                <form action="/client?{{id}}" method="delete">
+                <form action="/client" method="post">
                     <b>ID</b><div><input type="text" name="id"></div><br>
                 <input type="submit" value="Delete client"/>
             </form></td></tr>

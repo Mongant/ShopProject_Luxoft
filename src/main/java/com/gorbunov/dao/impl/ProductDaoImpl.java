@@ -11,20 +11,7 @@ import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private static ProductDao productDao;
-
     DataBaseConnection dbConnection = new DataBaseConnection();
-
-    private ProductDaoImpl() {
-    }
-
-    public static ProductDao getInstance() {
-        if(productDao == null) {
-            productDao = new ProductDaoImpl();
-        }
-        return productDao;
-
-    }
 
     @Override
     public void addProduct(Product product) {

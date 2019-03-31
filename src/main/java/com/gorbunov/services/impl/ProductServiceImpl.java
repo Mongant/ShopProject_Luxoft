@@ -3,19 +3,19 @@ package com.gorbunov.services.impl;
 import com.gorbunov.dao.ProductDao;
 import com.gorbunov.domain.Product;
 import com.gorbunov.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
+    @Autowired
     ProductDao productDao;
 
-    public ProductServiceImpl(ProductDao productDao) {
-        this.productDao = productDao;
-    }
-
     @Override
-    public Product createProduct(String name, String description, float price) {
+    public Product addProduct(String name, String description, float price) {
         Product product = new Product(name, description, price);
         productDao.addProduct(product);
         return product;

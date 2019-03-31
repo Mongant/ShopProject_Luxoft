@@ -20,7 +20,7 @@
         <tr>
             <td><a href="deleteProductOnBasket.jsp"><b>Remove product on basket</b></a></td></tr>
         <tr>
-            <td><a href="/product_container"><b>Show products on basket</b></a></td></tr>
+            <td><a href="/product_container" methods="get"><b>Show products on basket</b></a></td></tr>
         <tr>
             <td><form action="/order" method="post">
                 <input type="submit" name="buy" value="Buy (Show order)" />

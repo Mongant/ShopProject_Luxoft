@@ -5,17 +5,20 @@ import com.gorbunov.domain.Client;
 import com.gorbunov.services.ClientService;
 import com.gorbunov.validator.BusinessException;
 import com.gorbunov.validator.ValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ClientServiceImpl implements ClientService {
+
+    @Autowired
     private ClientDao clientDao;
+
+    @Autowired
     private ValidationService validationService;
 
-    public ClientServiceImpl(ClientDao clientDao, ValidationService validationService) {
-        this.clientDao = clientDao;
-        this.validationService = validationService;
-    }
 
     @Override
     public Client createClient(String name, String surname, String phone, int age, String email) throws BusinessException {

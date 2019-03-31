@@ -1,3 +1,4 @@
+<%@ page import="com.gorbunov.utils.GenerateId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>

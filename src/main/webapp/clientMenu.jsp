@@ -1,3 +1,4 @@
+<%@ page import="com.gorbunov.utils.GenerateId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -6,6 +7,7 @@
     <link type="text/css" rel="stylesheet" href="/style/tableStyle.css"/>
 </head>
 <body>
+    <%GenerateId.generateId();%>
     <table class="cinereousTable">
         <thead>
         <tr>

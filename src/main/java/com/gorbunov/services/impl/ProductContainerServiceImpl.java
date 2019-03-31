@@ -3,14 +3,14 @@ package com.gorbunov.services.impl;
 import com.gorbunov.dao.ProductContainerDao;
 import com.gorbunov.domain.ProductContainer;
 import com.gorbunov.services.ProductContainerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductContainerServiceImpl implements ProductContainerService {
 
+    @Autowired
     ProductContainerDao productContainerDao;
-
-    public ProductContainerServiceImpl(ProductContainerDao productContainerDao) {
-        this.productContainerDao = productContainerDao;
-    }
 
     @Override
     public void addProductContainer(long id, String ref) {
