@@ -13,7 +13,7 @@
 out
 
 #ignor resources folder
-src/main/resources/
+src/main/resources/*.db
 
 #ignore JUnit test folder
 #src/main/test/
