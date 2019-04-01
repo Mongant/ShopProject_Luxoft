@@ -1,13 +1,21 @@
 package com.gorbunov.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name = "PRODUCT")
 public class Product {
 
     private long id = 0;
     private String name;
     private String description;
     private float price;
+
+    public Product() {
+        //for hibernate constructor
+    }
 
     public Product(long id, String name, String description, float price) {
         this.id = id;

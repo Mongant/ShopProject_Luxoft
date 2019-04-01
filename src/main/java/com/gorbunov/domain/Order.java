@@ -1,14 +1,23 @@
 package com.gorbunov.domain;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "ORDER")
 public class Order {
 
     private long id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "CLIENT")
     private Client client;
     private List<Product> products;
     private float amount;
+
+    public Order() {
+        //for hibernate constructor
+    }
 
     public Order(long id, Client client, List<Product> products, float amount) {
         this.id = id;

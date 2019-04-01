@@ -1,12 +1,20 @@
 package com.gorbunov.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Map;
 import java.util.Objects;
 
+@Entity
+@Table(name="PRODUCT_CONTAINER")
 public class ProductContainer {
 
     private String refId;
     private Map<Long, Product> productsContainer;
+
+    public ProductContainer() {
+        //for hibernate constructorv
+    }
 
     public ProductContainer(String refId, Map<Long, Product> productsContainer) {
         this.refId = refId;

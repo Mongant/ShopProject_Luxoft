@@ -8,20 +8,23 @@ import java.util.Objects;
 @Entity
 @Table(name = "CLIENT")
 public class Client {
+
     @Id
+    @Column(name = "ID")
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id = 0;
-    @Column(name = "NAME")
     private String name;
-    @Column(name = "SURNAME")
     private String surname;
+    @Column(name = "AGE")
+    private int age;
+    @Column(name = "PHONE_NUM")
     private String phone;
     private String email;
-    private int age;
+
 
     public Client() {
-        //for hibernate
+        //for hibernate constructor
     }
 
     public Client(long id, String name, String surname, int age, String phone, String email) {

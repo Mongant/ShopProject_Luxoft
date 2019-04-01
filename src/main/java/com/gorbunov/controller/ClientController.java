@@ -33,7 +33,7 @@ public class ClientController {
                              @RequestParam String phone,
                              @RequestParam String email) throws BusinessException {
         clientService.createClient(name, surname, phone, age, email);
-        return "clientsList";
+        return "adminClientOptions";
     }
 
     @RequestMapping(value = "/client", method = RequestMethod.PUT)
