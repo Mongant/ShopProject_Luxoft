@@ -1,17 +1,26 @@
 package com.gorbunov.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "PRODUCT")
 public class Product {
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(generator = "increment")
     private long id = 0;
+
+    @Column(name = "PRODUCT_NAME")
     private String name;
+
     private String description;
     private float price;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID")
+    private ProductContainer productContainer;
 
     public Product() {
         //for hibernate constructor
@@ -60,6 +69,14 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public ProductContainer getProductContainer() {
+        return productContainer;
+    }
+
+    public void setProductContainer(ProductContainer productContainer) {
+        this.productContainer = productContainer;
     }
 
     @Override

@@ -8,10 +8,16 @@ import java.util.Objects;
 @Table(name = "ORDER")
 public class Order {
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(generator = "increment")
     private long id;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "CLIENT")
+    @PrimaryKeyJoinColumn
     private Client client;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productContainer", cascade = CascadeType.ALL)
     private List<Product> products;
     private float amount;
 

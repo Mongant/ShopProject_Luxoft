@@ -13,6 +13,9 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.default_schema">SHOP</property>
         <mapping class="com.gorbunov.domain.Client"/>
+        <mapping class="com.gorbunov.domain.Product"/>
+        <mapping class="com.gorbunov.domain.ProductContainer"/>
+        <mapping class="com.gorbunov.domain.Order"/>
 
     </session-factory>
 </hibernate-configuration>

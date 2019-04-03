@@ -1,24 +1,39 @@
 package com.gorbunov.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.Map;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name="PRODUCT_CONTAINER")
 public class ProductContainer {
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(generator = "increment")
+    private long id;
+
+    @Column(name = "REF_ID")
     private String refId;
-    private Map<Long, Product> productsContainer;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productContainer", cascade = CascadeType.ALL)
+    private List<Product> products;
 
     public ProductContainer() {
         //for hibernate constructorv
     }
 
-    public ProductContainer(String refId, Map<Long, Product> productsContainer) {
+    public ProductContainer(String refId, List<Product> products) {
         this.refId = refId;
-        this.productsContainer = productsContainer;
+        this.products = products;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getRefId() {
@@ -29,8 +44,8 @@ public class ProductContainer {
         this.refId = refId;
     }
 
-    public Map<Long, Product> getProductsContainer() {
-        return productsContainer;
+    public List<Product> getProducts() {
+        return products;
     }
 
     @Override
@@ -39,11 +54,11 @@ public class ProductContainer {
         if (o == null || getClass() != o.getClass()) return false;
         ProductContainer that = (ProductContainer) o;
         return Objects.equals(refId, that.refId) &&
-                Objects.equals(productsContainer, that.productsContainer);
+                Objects.equals(products, that.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(refId, productsContainer);
+        return Objects.hash(refId, products);
     }
 }

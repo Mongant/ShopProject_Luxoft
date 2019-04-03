@@ -1,7 +1,5 @@
 package com.gorbunov.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -12,7 +10,6 @@ public class Client {
     @Id
     @Column(name = "ID")
     @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
     private long id = 0;
     private String name;
     private String surname;

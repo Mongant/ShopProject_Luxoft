@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -41,7 +40,7 @@ public class OrderController {
     public String addOrder(Model model) {
         String sessionId = GenerateId.getResult();
         List<Client> clients = clientService.listClients();
-        List<Product> products = new ArrayList<>(productContainerService.showProductContainer(sessionId).getProductsContainer().values());
+        List<Product> products = productContainerService.showProductContainer(sessionId).getProducts();
         orderService.addOrder(clients.get(clientService.listClients().size() -1).getId(), sessionId, products);
         Order order = orderService.showOrder(sessionId);
         model.addAttribute("order", order);
