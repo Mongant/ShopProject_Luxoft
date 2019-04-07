@@ -1,7 +1,6 @@
 package com.gorbunov.domain;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -9,23 +8,28 @@ import java.util.Objects;
 public class ProductContainer {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable=false)
     @GeneratedValue(generator = "increment")
     private long id;
 
     @Column(name = "REF_ID")
     private String refId;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productContainer", cascade = CascadeType.ALL)
-    private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name="REF_ID", nullable=false, insertable = false, updatable = false)
+    private Order order;
+
+    @OneToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Product product;
 
     public ProductContainer() {
-        //for hibernate constructorv
+        //for hibernate constructor
     }
 
-    public ProductContainer(String refId, List<Product> products) {
+    public ProductContainer(String refId, Product product) {
         this.refId = refId;
-        this.products = products;
+        this.product = product;
     }
 
     public long getId() {
@@ -44,8 +48,20 @@ public class ProductContainer {
         this.refId = refId;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -54,11 +70,11 @@ public class ProductContainer {
         if (o == null || getClass() != o.getClass()) return false;
         ProductContainer that = (ProductContainer) o;
         return Objects.equals(refId, that.refId) &&
-                Objects.equals(products, that.products);
+                Objects.equals(product, that.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(refId, products);
+        return Objects.hash(refId, product);
     }
 }

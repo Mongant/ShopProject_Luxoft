@@ -18,9 +18,9 @@ public class Product {
     private String description;
     private float price;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID")
-    private ProductContainer productContainer;
+//    @ManyToOne
+//    @JoinColumn(name="REF_ID", nullable=false, insertable = false, updatable = false)
+//    private Order order;
 
     public Product() {
         //for hibernate constructor
@@ -69,14 +69,6 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public ProductContainer getProductContainer() {
-        return productContainer;
-    }
-
-    public void setProductContainer(ProductContainer productContainer) {
-        this.productContainer = productContainer;
     }
 
     @Override

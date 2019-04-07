@@ -40,7 +40,7 @@ public class OrderController {
     public String addOrder(Model model) {
         String sessionId = GenerateId.getResult();
         List<Client> clients = clientService.listClients();
-        List<Product> products = productContainerService.showProductContainer(sessionId).getProducts();
+        List<Product> products = productContainerService.showProductContainer(sessionId);
         orderService.addOrder(clients.get(clientService.listClients().size() -1).getId(), sessionId, products);
         Order order = orderService.showOrder(sessionId);
         model.addAttribute("order", order);

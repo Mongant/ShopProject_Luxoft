@@ -17,24 +17,25 @@ public class Order {
     @PrimaryKeyJoinColumn
     private Client client;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productContainer", cascade = CascadeType.ALL)
-    private List<Product> products;
+    @OneToMany(mappedBy = "order")
+    private List<ProductContainer> productContainers;
+
     private float amount;
 
     public Order() {
         //for hibernate constructor
     }
 
-    public Order(long id, Client client, List<Product> products, float amount) {
+    public Order(long id, Client client, List<ProductContainer> productContainers, float amount) {
         this.id = id;
         this.client = client;
-        this.products = products;
+        this.productContainers = productContainers;
         this.amount = amount;
     }
 
-    public Order(Client client, List<Product> products, float amount) {
+    public Order(Client client, List<ProductContainer> productContainers, float amount) {
         this.client = client;
-        this.products = products;
+        this.productContainers = productContainers;
         this.amount = amount;
     }
 
@@ -54,12 +55,12 @@ public class Order {
         this.client = client;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<ProductContainer> getProductContainers() {
+        return productContainers;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProductContainers(List<ProductContainer> productContainers) {
+        this.productContainers = productContainers;
     }
 
     public float getAmount() {
@@ -75,7 +76,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", client=" + client +
-                ", products=" + products +
+                ", productContainers=" + productContainers +
                 ", amount=" + amount +
                 '}';
     }
@@ -88,11 +89,11 @@ public class Order {
         return id == order.id &&
                 Float.compare(order.amount, amount) == 0 &&
                 Objects.equals(client, order.client) &&
-                Objects.equals(products, order.products);
+                Objects.equals(productContainers, order.productContainers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, client, products, amount);
+        return Objects.hash(id, client, productContainers, amount);
     }
 }

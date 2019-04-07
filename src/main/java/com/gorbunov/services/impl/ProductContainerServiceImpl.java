@@ -1,10 +1,14 @@
 package com.gorbunov.services.impl;
 
 import com.gorbunov.dao.ProductContainerDao;
+import com.gorbunov.domain.Product;
 import com.gorbunov.domain.ProductContainer;
 import com.gorbunov.services.ProductContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductContainerServiceImpl implements ProductContainerService {
@@ -18,17 +22,16 @@ public class ProductContainerServiceImpl implements ProductContainerService {
     }
 
     @Override
-    public ProductContainer getProductContainerItem(long id, String refId) throws NullPointerException {
-        return productContainerDao.getProductContainerItem(id, refId);
-    }
-
-    @Override
     public void deleteProductContainer(long id, String refId) {
         productContainerDao.deleteProductContainerItem(id, refId);
     }
 
     @Override
-    public ProductContainer showProductContainer(String refId) {
-        return  productContainerDao.showProductContainer(refId);
+    public List<Product> showProductContainer(String refId) {
+        List<Product> products = new ArrayList<>();
+        for(ProductContainer productContainer : productContainerDao.showProductContainer(refId)) {
+            products.add(productContainer.getProduct());
+        }
+        return products;
     }
 }

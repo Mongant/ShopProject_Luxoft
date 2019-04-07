@@ -3,6 +3,8 @@ package com.gorbunov.dao;
 
 import com.gorbunov.domain.ProductContainer;
 
+import java.util.List;
+
 public interface ProductContainerDao {
 
     /**
@@ -11,8 +13,6 @@ public interface ProductContainerDao {
      * @param refId unique identifier for product container in client session
      * */
     void addProductContainer(long id, String refId);
-
-    ProductContainer getProductContainerItem(long id, String refId);
 
     /**
      * Delete product on basket <br>
@@ -25,5 +25,5 @@ public interface ProductContainerDao {
      * Show all product in basket who was added on unique identifier and unique session <br>
      * @param refId unique identifier for product container in client session
      * */
-    ProductContainer showProductContainer(String refId);
+    List<ProductContainer> showProductContainer(String refId);
 }

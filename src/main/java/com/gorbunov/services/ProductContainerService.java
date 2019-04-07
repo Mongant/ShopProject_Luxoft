@@ -1,6 +1,9 @@
 package com.gorbunov.services;
 
+import com.gorbunov.domain.Product;
 import com.gorbunov.domain.ProductContainer;
+
+import java.util.List;
 
 public interface ProductContainerService {
 
@@ -22,10 +25,5 @@ public interface ProductContainerService {
      * Show product container <br>
      * @param refId unique identifier for product container in client session
      * */
-    ProductContainer showProductContainer(String refId);
-
-    /**
-     *
-     * */
-    ProductContainer getProductContainerItem(long id, String refId);
+   List<Product> showProductContainer(String refId);
 }
